@@ -70,7 +70,11 @@ export class ListaGruposComponent implements OnInit {
   }
 
   enviarInvitacion(idGrupo: number, idUsuario: number): void {
-    this.grupoService.enviarInvitacion(idGrupo, idUsuario).subscribe({
+     const data = {
+      idGrupo: idGrupo,
+      idUsuario: idUsuario
+    };
+    this.grupoService.enviarInvitacion(data).subscribe({
       next: () => alert('Invitación enviada'),
       error: err => console.error(err)
     });

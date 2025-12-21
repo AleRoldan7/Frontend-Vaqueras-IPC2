@@ -1,0 +1,25 @@
+    .card {
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.card-header {
+  background: linear-gradient(135deg, #003087, #0055b7) !important;
+  border-radius: 20px 20px 0 0 !important;
+  padding: 2rem;
+}
+
+.table th {
+  background: #003087;
+  color: white;
+  font-weight: bold;
+}
+
+.btn-success { background: #28a745; border: none; }
+.btn-warning { background: #ffc107; color: black; border: none; }
+.btn-danger { background: #dc3545; border: none; }
+
+.btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}

@@ -19,4 +19,8 @@ export class ListaService {
   obtenerCategorias(): Observable<any[]> {
     return this.httpCliente.get<any[]>(`${this.restConst.getApiURL()}lista/categorias`);
   }
+
+  obtenerUsuarioComun(): Observable<any[]> {
+    return this.httpCliente.get<any[]>(`${this.restConst.getApiURL()}lista/usuario-comun`);
+  }
 }

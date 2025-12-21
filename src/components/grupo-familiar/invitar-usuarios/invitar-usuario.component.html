@@ -1,0 +1,14 @@
+<h3>Invitar usuarios</h3>
+
+<ul>
+    <li *ngFor="let u of usuarios">
+        {{ u.nombre }}
+        <button (click)="InvitarUsuario(u.idUsuario)">
+            Invitar
+        </button>
+    </li>
+</ul>
+
+<div class="card-footer bg-white border-0 text-end mt-3">
+    <a routerLink="/usuario-comun" class="btn btn-outline-secondary">Regresar</a>
+</div>

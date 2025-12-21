@@ -21,6 +21,8 @@ import { ListarUsuariosComponent } from '../components/sistema/listar-usuario/li
 import { BibliotecaUsuarioComponent } from '../components/biblioteca/biblioteca-usuario.component';
 import { CompraVideojuegoComponent } from '../components/usuario/compra-videojuego/compra-videojuego.component';
 import { PorcentajeComisionComponent } from '../components/comisones/porcentaje-comision.component';
+import { IngresoEmpresaComponent } from '../components/reportes/reportes-sistema/ingreso-empresa/ingreso-empresa.component';
+import { InvitarUsuarioComponent } from '../components/grupo-familiar/invitar-usuarios/invitar-usuario.component';
 
 export const routes: Routes = [
 
@@ -125,6 +127,16 @@ export const routes: Routes = [
     {
         path: 'comision',
         component: PorcentajeComisionComponent
+    },
+    {
+        path: 'reporte/sistema/ingresos-empresas',
+        component: IngresoEmpresaComponent,
+        title: 'Reporte Ingreso Empresas'
+    },
+    {
+        path: 'grupo/:idGrupo/invitar-usuario',
+        component: InvitarUsuarioComponent,
+        title: 'Enviar Invitación'
     }
 
 ];

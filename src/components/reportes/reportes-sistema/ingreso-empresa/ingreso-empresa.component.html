@@ -1,0 +1,70 @@
+<div class="container-fluid mt-4 px-5">
+  <div class="card shadow-lg border-0">
+
+    <div class="card-header bg-primary text-white text-center">
+      <h1 class="mb-0">REPORTE GLOBAL DEL SISTEMA</h1>
+      <h4>ADMINISTRADOR DEL SISTEMA</h4>
+    </div>
+
+    <div class="card-body">
+
+      <form class="row g-3 mb-4" (ngSubmit)="cargarIngresos()">
+
+        <div class="col-md-3">
+          <label class="form-label fw-bold">Fecha Inicio</label>
+          <input type="date" class="form-control" [(ngModel)]="fechaInicio" name="fechaInicio">
+        </div>
+
+        <div class="col-md-3">
+          <label class="form-label fw-bold">Fecha Fin</label>
+          <input type="date" class="form-control" [(ngModel)]="fechaFin" name="fechaFin">
+        </div>
+
+        <div class="col-md-6 d-flex align-items-end gap-3">
+          <button type="submit" class="btn btn-success btn-lg px-4">
+            FILTRAR
+          </button>
+
+          <button type="button" class="btn btn-warning btn-lg px-4" (click)="limpiarFiltros()">
+            LIMPIAR
+          </button>
+
+          <button type="button"
+            class="btn btn-danger btn-lg px-4"
+            (click)="descargarIngresoPDF()"
+            [disabled]="ingresosEmpresa.length === 0">
+            PDF
+          </button>
+
+          <button type="button" class="btn btn-info btn-lg px-4" routerLink="/admin-sistema">
+            REGRESAR
+          </button>
+        </div>
+      </form>
+
+      <div class="table-responsive mt-4">
+        <table class="table table-hover table-bordered align-middle">
+          <thead class="table-dark">
+            <tr class="text-center">
+              <th>ID</th>
+              <th>Empresa</th>
+              <th>Total Ventas</th>
+              <th>Comisión Plataforma</th>
+              <th>Ingreso Empresa</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let e of ingresosEmpresa">
+              <td class="text-center">{{ e.idEmpresa }}</td>
+              <td><strong>{{ e.nombreEmpresa }}</strong></td>
+              <td class="text-success fw-bold">{{ e.totalVentas | currency:'Q ' }}</td>
+              <td class="text-danger fw-bold">{{ e.comisionPlataforma | currency:'Q ' }}</td>
+              <td class="text-primary fw-bold">{{ e.ingresoEmpresa | currency:'Q ' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>

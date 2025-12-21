@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import Swal from 'sweetalert2';
 
 import { GrupoFamiliarService } from '../../../services/grupo-service/grupo-familiar-service';
@@ -15,7 +15,7 @@ export class CrearGrupoComponent {
 
   grupoForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private grupoService: GrupoFamiliarService) {
+  constructor(private fb: FormBuilder, private grupoService: GrupoFamiliarService, private router: Router) {
     this.grupoForm = this.fb.group({
       nombreGrupo: ['', Validators.required]
     });
@@ -26,14 +26,22 @@ export class CrearGrupoComponent {
       const usuario = JSON.parse(localStorage.getItem('usuario')!);
 
       const nombre = this.grupoForm.value.nombreGrupo;
-      const idUsuarioDueño = usuario.idUsuario; 
+      const idUsuarioDueño = usuario.idUsuario;
 
       this.grupoService.crearGrupo(nombre, idUsuarioDueño).subscribe({
-        next: () => 
-          alert('Grupo creado'),
-        error: err => console.error(err)
+        next: (grupoCreado) => {
+          Swal.fire('Éxito', 'Grupo creado correctamente', 'success');
+
+          const idGrupo = grupoCreado.idGrupo;
+
+         
+          this.router.navigate(['/grupo', idGrupo, 'invitar-usuario']);
+        },
+        error: err => {
+          console.error(err);
+          Swal.fire('Error', 'No se pudo crear el grupo', 'error');
+        }
       });
     }
   }
-
 }

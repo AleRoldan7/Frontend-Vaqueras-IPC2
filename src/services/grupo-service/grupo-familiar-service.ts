@@ -8,12 +8,12 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class GrupoFamiliarService {
-  
+
   restConstants = new RestConstants();
 
-  constructor(private httpCliente : HttpClient) {}
+  constructor(private httpCliente: HttpClient) { }
 
-   listarGrupos(): Observable<GrupoFamiliar[]> {
+  listarGrupos(): Observable<GrupoFamiliar[]> {
     return this.httpCliente.get<GrupoFamiliar[]>(`${this.restConstants.getApiURL()}grupo-familiar/listar`);
   }
 
@@ -25,11 +25,11 @@ export class GrupoFamiliarService {
   }
 
   actualizarGrupo(idGrupo: number, nombreNuevo: string): Observable<any> {
-  return this.httpCliente.put<any>(
-    `${this.restConstants.getApiURL()}grupo-familiar/actualizar/${idGrupo}`,
-    { nombreNuevo }
-  );
-}
+    return this.httpCliente.put<any>(
+      `${this.restConstants.getApiURL()}grupo-familiar/actualizar/${idGrupo}`,
+      { nombreNuevo }
+    );
+  }
 
   eliminarGrupo(idGrupo: number): Observable<any> {
     return this.httpCliente.delete(`${this.restConstants.getApiURL()}grupo-familiar/eliminar/${idGrupo}`);
@@ -43,8 +43,8 @@ export class GrupoFamiliarService {
     return this.httpCliente.delete(`${this.restConstants.getApiURL()}grupo-familiar/eliminar-usuario?idGrupo=${idGrupo}&idUsuario=${idUsuario}`);
   }
 
-  enviarInvitacion(idGrupo: number, idUsuario: number): Observable<any> {
-    return this.httpCliente.post(`${this.restConstants.getApiURL()}grupo-familiar/invitar-usuario`, { idGrupo, idUsuario });
+  enviarInvitacion(data: any): Observable<any> {
+    return this.httpCliente.post(`${this.restConstants.getApiURL()}grupo-familiar/invitar-usuario`, data, {responseType: 'text'});
   }
 
   responderInvitacion(idGrupo: number, idUsuario: number, respuesta: 'ACEPTADA' | 'RECHAZADA'): Observable<any> {
