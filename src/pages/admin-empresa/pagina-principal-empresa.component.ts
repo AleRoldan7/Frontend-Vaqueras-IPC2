@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { EmpresaService } from '../../services/empresa-service/empresa-service';
 
 @Component({
@@ -12,7 +12,7 @@ export class PaginaPrincipalEmpresaComponent implements OnInit {
 
   nombreEmpresa: string = '';
 
-  constructor(private empresaService: EmpresaService) { }
+  constructor(private empresaService: EmpresaService, private router: Router) { }
 
   ngOnInit() {
     const usuario = localStorage.getItem('usuario');
@@ -29,5 +29,9 @@ export class PaginaPrincipalEmpresaComponent implements OnInit {
     });
   }
 
+  cerrarSesion(): void {
+    localStorage.removeItem('usuario');
+    this.router.navigate(['/login']);
+  }
 
 }

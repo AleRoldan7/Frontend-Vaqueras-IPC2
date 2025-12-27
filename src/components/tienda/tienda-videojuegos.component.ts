@@ -6,7 +6,7 @@ import { Videojuego } from '../../models/empresa/videojuego';
 import { CompraService } from '../../services/compra-service/compra-service';
 import { VideojuegoService } from '../../services/videojuego-service/videojuego-service';
 import { VideojuegoResponse } from '../../models/empresa/videojuego-response';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-tienda-videojuegos',
@@ -39,23 +39,49 @@ export class TiendaVideojuegosComponent {
     this.videojuegoService.listarVideojuegoDisponibles()
       .subscribe(juegos => {
         this.videojuegos = juegos;
-        this.cargarImagenes();
+        this.cargarVideojuegos();
       });
   }
 
-  cargarImagenes() {
-    this.videojuegos.forEach(juego => {
-      juego.imagenes = [];
+  cargarVideojuegos(): void {
+    this.videojuegoService.listarVideojuegoDisponibles()
+      .subscribe({
+        next: (juegos) => {
+          this.videojuegos = juegos || [];
 
-      this.videojuegoService.getImagenVideojuego(juego.idVideojuego)
-        .subscribe((imagenes: Blob) => {
-          const url = URL.createObjectURL(imagenes);
-          const safeUrl = this.sanitizer.bypassSecurityTrustUrl(url);
+          this.videojuegos.forEach(juego => {
+            juego.imagenPrincipal = this.getPlaceholderUrl();
 
-          juego.imagenes.push(safeUrl);
-        });
-    });
+            const idsImagenes: number[] = juego.idsImagenes || [];
+
+            if (idsImagenes.length > 0) {
+              this.videojuegoService.getImagenPorId(idsImagenes[0])
+                .subscribe((safeUrl: SafeResourceUrl) => {
+                  juego.imagenPrincipal = safeUrl;
+                });
+            }
+          });
+        },
+        error: (err) => {
+          console.error('Error al cargar videojuegos:', err);
+          Swal.fire('Error', 'No se pudieron cargar los videojuegos', 'error');
+        }
+      });
   }
+
+  private getPlaceholderUrl(): SafeResourceUrl {
+    const svg = `
+    <svg width="100%" height="100%" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+      <rect width="300" height="200" fill="#f0f0f0"/>
+      <text x="150" y="100" font-family="Arial" font-size="20" text-anchor="middle" fill="#999">
+        Sin Imagen
+      </text>
+    </svg>`;
+    const blob = new Blob([svg], { type: 'image/svg+xml' });
+    const url = URL.createObjectURL(blob);
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  }
+
   comprarVideojuego(idVideojuego: number) {
 
     Swal.fire({

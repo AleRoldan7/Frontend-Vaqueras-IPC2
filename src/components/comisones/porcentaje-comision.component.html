@@ -1,23 +1,129 @@
-<div class="container mt-4">
-  <h2>Comisión Global</h2>
-  <div class="mb-3 d-flex align-items-center gap-2">
-    <input type="number" [(ngModel)]="porcentajeGlobal" class="form-control w-25" min="0" max="100" step="0.01" />
-    <span>%</span>
-    <button class="btn btn-primary" (click)="actualizarGlobal()">Actualizar Global</button>
-  </div>
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+          <h4 class="mb-0"><i class="bi bi-percent me-2"></i>Gestión de Comisiones</h4>
+        </div>
 
-  <h3 class="mt-4">Comisión por Empresa</h3>
-  <div *ngFor="let empresa of empresas" class="d-flex align-items-center mb-2 gap-2">
-    <span class="fw-bold">{{ empresa.nombreEmpresa }}</span>
-    <input type="number" [(ngModel)]="porcentajeEmpresas[empresa.idEmpresa]" class="form-control w-25" min="0" max="100"
-      step="0.01" />
-    <span>%</span>
-    <button class="btn btn-success" (click)="actualizarEmpresa(empresa.idEmpresa)">Actualizar</button>
-  </div>
+        <div class="card-body">
+          <div class="mb-5 p-4 bg-light rounded">
+            <h5 class="fw-bold text-primary mb-3">Comisión Global de la Plataforma</h5>
+            
+            <div class="row align-items-end">
+              <div class="col-md-4">
+                <label class="form-label fw-semibold">Porcentaje actual</label>
+                <div class="input-group">
+                  <input 
+                    type="number" 
+                    [(ngModel)]="porcentajeGlobal" 
+                    class="form-control form-control-lg text-center" 
+                    min="0" 
+                    max="100" 
+                    step="0.01"
+                    [disabled]="loading">
+                  <span class="input-group-text fs-4">%</span>
+                </div>
+              </div>
+              
+              <div class="col-md-4 text-center">
+                <button 
+                  class="btn btn-primary btn-lg px-5" 
+                  (click)="actualizarGlobal()"
+                  [disabled]="loading || porcentajeGlobal < 0 || porcentajeGlobal > 100">
+                  <span *ngIf="!loading">Actualizar Global</span>
+                  <span *ngIf="loading"><span class="spinner-border spinner-border-sm me-2"></span>Guardando...</span>
+                </button>
+              </div>
+              
+              <div class="col-md-4">
+                <div class="alert alert-info small">
+                  <i class="bi bi-info-circle me-1"></i>
+                  Esta comisión se aplica a todas las ventas por defecto.
+                </div>
+              </div>
+            </div>
+          </div>
 
-  <div class="card-footer bg-white border-0 text-end">
-    <a routerLink="/admin-sistema" class="btn btn-outline-secondary">
-      Regresar
-    </a>
+          <h5 class="fw-bold text-primary mb-4">Comisiones Específicas por Empresa</h5>
+
+          <div *ngIf="loadingEmpresas" class="text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Cargando empresas...</span>
+            </div>
+          </div>
+
+          <div *ngIf="!loadingEmpresas && empresas.length === 0" class="alert alert-warning text-center">
+            No hay empresas registradas.
+          </div>
+
+          <div *ngIf="!loadingEmpresas && empresas.length > 0">
+            <div class="table-responsive">
+              <table class="table table-hover align-middle">
+                <thead class="table-primary">
+                  <tr>
+                    <th>Empresa</th>
+                    <th class="text-center">Comisión Actual</th>
+                    <th class="text-center">Nueva Comisión (%)</th>
+                    <th class="text-center">Acción</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let empresa of empresas">
+                    <td>
+                      <strong>{{ empresa.nombreEmpresa }}</strong>
+                    </td>
+                    <td class="text-center">
+                      <span class="badge bg-secondary fs-6">
+                        {{ empresa.comisionActual | number:'1.2-2' }}%
+                      </span>
+                    </td>
+                    <td>
+                      <div class="input-group input-group-sm">
+                        <input 
+                          type="number" 
+                          [(ngModel)]="porcentajeEmpresas[empresa.idEmpresa]" 
+                          class="form-control text-center"
+                          min="0" 
+                          [max]="porcentajeGlobal"
+                          step="0.01"
+                          placeholder="0.00">
+                        <span class="input-group-text">%</span>
+                      </div>
+                      <small class="text-danger" 
+                             *ngIf="porcentajeEmpresas[empresa.idEmpresa] > porcentajeGlobal">
+                        No puede exceder la global ({{ porcentajeGlobal }}%)
+                      </small>
+                    </td>
+                    <td class="text-center">
+                      <button 
+                        class="btn btn-success btn-sm"
+                        (click)="actualizarEmpresa(empresa.idEmpresa)"
+                        [disabled]="!porcentajeEmpresas[empresa.idEmpresa] || 
+                                    porcentajeEmpresas[empresa.idEmpresa] < 0 || 
+                                    porcentajeEmpresas[empresa.idEmpresa] > porcentajeGlobal">
+                        <i class="bi bi-check-lg"></i> Guardar
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="alert alert-info mt-4">
+              <i class="bi bi-info-circle-fill me-2"></i>
+              <strong>Regla importante:</strong> Las comisiones específicas nunca pueden superar la comisión global (actual: {{ porcentajeGlobal }}%).
+              Si reduces la global, las específicas se ajustarán automáticamente.
+            </div>
+          </div>
+        </div>
+
+        <div class="card-footer bg-white border-0 text-end">
+          <button class="btn btn-outline-secondary" routerLink="/admin-sistema">
+            <i class="bi bi-arrow-left me-1"></i> Regresar al Panel
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

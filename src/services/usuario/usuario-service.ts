@@ -5,6 +5,7 @@ import { RegistroUsuario } from '../../models/usuario/registro-comun';
 import { Observable } from 'rxjs';
 import { UsuarioResponse } from '../../models/usuario/usuario-response';
 import { LoginUsuario } from '../../models/usuario/loginRequest';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +14,7 @@ export class UsuarioService {
 
   restConstants = new RestConstants();
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient, private router: Router) { }
 
   registrarUsuarioComun(data: RegistroUsuario): Observable<UsuarioResponse> {
     return this.httpClient.post<UsuarioResponse>(`${this.restConstants.getApiURL()}usuario/registroUsuarioComun`, data);
@@ -43,4 +44,13 @@ export class UsuarioService {
     return this.httpClient.post(`${this.restConstants.getApiURL()}usuario/agregar-fondos`, { idUsuario, monto });
   }
 
+  logout(): void {
+    localStorage.removeItem('usuario');
+    this.router.navigate(['/login']);
+  }
+
+  getUsuario() {
+    const data = localStorage.getItem('usuario');
+    return data ? JSON.parse(data) : null;
+  }
 }

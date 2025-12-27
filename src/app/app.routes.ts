@@ -23,120 +23,73 @@ import { CompraVideojuegoComponent } from '../components/usuario/compra-videojue
 import { PorcentajeComisionComponent } from '../components/comisones/porcentaje-comision.component';
 import { IngresoEmpresaComponent } from '../components/reportes/reportes-sistema/ingreso-empresa/ingreso-empresa.component';
 import { InvitarUsuarioComponent } from '../components/grupo-familiar/invitar-usuarios/invitar-usuario.component';
+import { GruposCreadosUsuarioComponent } from '../components/grupo-familiar/grupos-usuario/grupos-creados-usuario.component';
+import { MiembrosGrupoComponent } from '../components/grupo-familiar/miembros-grupo/miembros-grupo.component';
+import { BibliotecaGrupoComponent } from '../components/grupo-familiar/biblioteca-grupo/biblioteca-grupo.component';
+import { ComentarioCalificacionComponent } from '../components/comentario-calificacion/comentario-calificacion.component';
+import { BuzonEmpresaComponent } from '../components/empresa/buzon-empresa/buzon-empresa.component';
+import { PerfilUsuarioComponent } from '../components/usuario/perfil-usuario/perfil-usuario.component';
 
 export const routes: Routes = [
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: 'login', component: LoginComponent },
 
-    {
-        path: '',
-        redirectTo: 'login',
-        pathMatch: 'full',
-    },
-    {
-        path: 'login',
-        component: LoginComponent
-    },
-    {
-        path: 'registro-empresa',
-        component: RegistroEmpresaComponent,
-        canActivate: [autoGuard],
-        data: { roles: ['ADMIN_SISTEMA'] }
-    },
-    {
-        path: 'registro-usuario-comun',
-        component: RegistroUsuarioComponent
+  { path: 'registro-usuario-comun', component: RegistroUsuarioComponent },
 
-    },
-    {
-        path: 'crear-videojuego',
-        component: CrearVideojuegoComponent,
-        canActivate: [autoGuard],
-        data: { roles: ['ADMIN_EMPRESA'] }
-    },
-    {
-        path: "videojuegos-creados",
-        component: VideojuegosCreadosComponent,
+  {
+    path: 'registro-empresa',
+    component: RegistroEmpresaComponent,
+    canActivate: [autoGuard],
+    data: { roles: ['ADMIN_SISTEMA'] }
+  },
 
-    },
-    {
-        path: 'categoria',
-        component: CrearCategoriaComponent,
+  {
+    path: 'usuario-comun',
+    canActivate: [autoGuard],
+    data: { roles: ['USUARIO_COMUN'] },
+    children: [
+      { path: '', component: PaginaPrincipalUsuarioComponent },
+      { path: 'tienda', component: TiendaVideojuegosComponent },
+      { path: 'biblioteca', component: BibliotecaUsuarioComponent },
+      { path: 'perfil', component: PerfilUsuarioComponent },
+      { path: 'buscar-videojuego', component: CompraVideojuegoComponent },
+      { path: 'reseña-videojuegos', component: ComentarioCalificacionComponent },
 
-    },
-    {
-        path: 'admin-empresa',
-        component: PaginaPrincipalEmpresaComponent,
+      { path: 'crear-grupo-familiar', component: CrearGrupoComponent },
+      { path: 'invitaciones', component: InvitacionGrupoComponent },
+      { path: 'lista-mis-grupos-usuario', component: GruposCreadosUsuarioComponent },
+      { path: 'miembros-grupo-familiar', component: MiembrosGrupoComponent },
+      { path: 'biblioteca-grupo', component: BibliotecaGrupoComponent },
+      { path: 'grupo/:idGrupo/invitar-usuario', component: InvitarUsuarioComponent },
+    ]
+  },
 
-    },
-    {
-        path: 'admin-sistema',
-        component: PaginaPrincipalSistemaComponent,
+  {
+    path: 'admin-empresa',
+    canActivate: [autoGuard],
+    data: { roles: ['ADMIN_EMPRESA'] },
+    children: [
+      { path: '', component: PaginaPrincipalEmpresaComponent },
+      { path: 'videojuegos', component: VideojuegosCreadosComponent },
+      { path: 'crear-videojuego', component: CrearVideojuegoComponent },
+      { path: 'videojuego/:id/categorias', component: UnirVideojuegoCategoriaComponent },
+      { path: 'actualizar-empresa', component: ActualizarEmpresaComponent },
+      { path: 'buzon', component: BuzonEmpresaComponent },
+    ]
+  },
 
-    },
-    {
-        path: 'usuario-comun',
-        component: PaginaPrincipalUsuarioComponent
-    },
-    {
-        path: 'categoria-editar-eliminar',
-        component: ActualizarEliminarCategoriaComponent,
-
-    },
-    {
-        path: 'empresa/videojuego/:id/categorias',
-        component: UnirVideojuegoCategoriaComponent,
-        title: 'Agregar Categoria a Videojuego'
-    },
-    {
-        path: 'solictudes-pendientes',
-        component: SolicitudCategoriasComponent,
-        title: 'Solicitudes de Categorías Pendientes'
-    },
-    {
-        path: 'tienda-videojuegos',
-        component: TiendaVideojuegosComponent,
-        title: 'Tienda de Videojuegos'
-    },
-    {
-        path: 'actualizar-empresa',
-        component: ActualizarEmpresaComponent
-    },
-    {
-        path: 'crear-grupo-familiar',
-        component: CrearGrupoComponent
-    },
-    {
-        path: 'listar-grupos-familiares',
-        component: ListaGruposComponent
-    },
-    {
-        path: 'invitaciones-grupo',
-        component: InvitacionGrupoComponent
-    },
-    {
-        path: 'lista-usuario',
-        component: ListarUsuariosComponent
-    },
-    {
-        path: 'biblioteca-usuario',
-        component: BibliotecaUsuarioComponent
-    },
-    {
-        path: 'buscar-videojuego',
-        component: CompraVideojuegoComponent
-    },
-    {
-        path: 'comision',
-        component: PorcentajeComisionComponent
-    },
-    {
-        path: 'reporte/sistema/ingresos-empresas',
-        component: IngresoEmpresaComponent,
-        title: 'Reporte Ingreso Empresas'
-    },
-    {
-        path: 'grupo/:idGrupo/invitar-usuario',
-        component: InvitarUsuarioComponent,
-        title: 'Enviar Invitación'
-    }
-
+  {
+    path: 'admin-sistema',
+    canActivate: [autoGuard],
+    data: { roles: ['ADMIN_SISTEMA'] },
+    children: [
+      { path: '', component: PaginaPrincipalSistemaComponent },
+      { path: 'solicitudes', component: SolicitudCategoriasComponent },
+      { path: 'categorias', component: ActualizarEliminarCategoriaComponent },
+      { path: 'usuarios', component: ListarUsuariosComponent },
+      { path: 'comisiones', component: PorcentajeComisionComponent },
+      { path: 'reportes/ingresos', component: IngresoEmpresaComponent },
+      { path: 'crear-categoria', component: CrearCategoriaComponent }, // Movida aquí para consistencia
+    ]
+  },
 ];

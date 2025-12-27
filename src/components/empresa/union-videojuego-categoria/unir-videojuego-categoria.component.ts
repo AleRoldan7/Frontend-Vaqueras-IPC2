@@ -16,7 +16,7 @@ export class UnirVideojuegoCategoriaComponent implements OnInit {
 
   categorias: any[] = [];
   idVideojuego!: number;
-  categoriaSeleccionada: number | null = null;
+  categoriasSeleccionadas: number[] = [];
 
   constructor(private categoriaService: CategoriaService, private listaCategorias: ListaService, private route: ActivatedRoute) { }
 
@@ -47,38 +47,36 @@ export class UnirVideojuegoCategoriaComponent implements OnInit {
     });
   }
 
-  solicitarCategoria() {
+  solicitarCategorias() {
 
-    if (!this.categoriaSeleccionada) {
-      Swal.fire('Aviso', 'Seleccione una categoría', 'warning');
+    if (this.categoriasSeleccionadas.length === 0) {
+      Swal.fire('Aviso', 'Seleccione al menos una categoría', 'warning');
       return;
     }
 
-    console.log('Enviando:', {
-      idVideojuego: this.idVideojuego,
-      idCategoria: this.categoriaSeleccionada
-    });
-
-    this.categoriaService
-      .asignarCategoriaAVideojuego(
+    const peticiones = this.categoriasSeleccionadas.map(idCategoria =>
+      this.categoriaService.asignarCategoriaAVideojuego(
         this.idVideojuego,
-        this.categoriaSeleccionada
+        idCategoria
       )
-      .subscribe({
-        next: () => {
-          Swal.fire(
-            'Enviado',
-            'La categoría fue enviada a revisión',
-            'success'
-          );
-        },
-        error: () => {
-          Swal.fire(
-            'Error',
-            'No se pudo solicitar la categoría',
-            'error'
-          );
-        }
+    );
+
+    Promise.all(peticiones.map(p => p.toPromise()))
+      .then(() => {
+        Swal.fire(
+          'Éxito',
+          'Categorías asignadas correctamente',
+          'success'
+        );
+        this.categoriasSeleccionadas = [];
+      })
+      .catch(() => {
+        Swal.fire(
+          'Error',
+          'Ocurrió un error al asignar categorías',
+          'error'
+        );
       });
   }
+
 }

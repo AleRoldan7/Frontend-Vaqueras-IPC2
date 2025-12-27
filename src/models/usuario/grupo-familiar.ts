@@ -3,7 +3,7 @@ import { RegistroUsuario } from "./registro-comun";
 export interface GrupoFamiliar {
   idGrupo: number;
   nombreGrupo: string;
-  idUsuarioDue: number;
+  idUsuarioDueno: number;  
   miembros?: RegistroUsuario[];
 }
 

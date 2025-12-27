@@ -1,48 +1,37 @@
 <nav class="navbar navbar-expand-lg header-custom shadow-sm">
   <div class="container-fluid">
-
-    <a class="navbar-brand logo-title text-white" routerLink="/">
-      'Administrador Sistema'
+    <a class="navbar-brand logo-title text-white" routerLink="/admin-sistema">
+      Administrador Sistema
     </a>
 
-    <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarEmpresa">
+    <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSistema">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse" id="navbarEmpresa">
-
+    <div class="collapse navbar-collapse" id="navbarSistema">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0 align-items-lg-center">
-
         <li class="nav-item">
-          <a class="nav-link px-3" routerLink="/">Home</a>
-        </li>
-
-
-        <li class="nav-item">
-          <a class="nav-link px-3" routerLink="/categoria">Crear Categoria</a>
+          <a class="nav-link px-3" routerLink="/admin-sistema" routerLinkActive="active">Home</a>
         </li>
 
         <li class="nav-item">
-          <a class="nav-link px-3" routerLink="/registro-empresa">Crear Empresa</a>
-
-        <li class="nav-item">
-          <a class="nav-link px-3" routerLink="/categoria-editar-eliminar">Actualizar/Eliminar Categoria</a>
+          <a class="nav-link px-3" routerLink="/admin-sistema/categorias" routerLinkActive="active">Gestión Categorías</a>
         </li>
 
         <li class="nav-item">
-          <a class="nav-link px-3" routerLink="/actualizar-empresa">Actualizar Empresa</a>
+          <a class="nav-link px-3" routerLink="/registro-empresa" routerLinkActive="active">Registrar Empresa</a>
         </li>
 
         <li class="nav-item">
-          <a class="nav-link px-3" routerLink="/lista-usuario">Lista Usuarios</a>
+          <a class="nav-link px-3" routerLink="/admin-sistema/usuarios" routerLinkActive="active">Lista Usuarios</a>
         </li>
 
         <li class="nav-item">
-          <a class="nav-link px-3" routerLink="/comision">Comision</a>
+          <a class="nav-link px-3" routerLink="/admin-sistema/comisiones" routerLinkActive="active">Comisiones</a>
         </li>
 
         <li class="nav-item">
-          <a class="nav-link px-3" routerLink="/solictudes-pendientes">Solicitudes</a>
+          <a class="nav-link px-3" routerLink="/admin-sistema/solicitudes" routerLinkActive="active">Solicitudes Pendientes</a>
         </li>
 
         <li class="nav-item dropdown">
@@ -50,19 +39,17 @@
             Reportes
           </a>
           <ul class="dropdown-menu dropdown-menu-dark">
-            <li><a class="dropdown-item" routerLink="/reporte/sistema/ingresos-empresas">Ingresos Empresa</a></li>
-            <li><a class="dropdown-item" routerLink="/reporte/sala-comentario">Comentarios</a></li>
+            <li><a class="dropdown-item" routerLink="/admin-sistema/reportes/ingresos">Ingresos Empresas</a></li>
           </ul>
         </li>
       </ul>
 
       <div class="d-flex align-items-center gap-3">
         <input type="search" class="form-control search-input" placeholder="Buscar..." />
-        <button routerLink="/login" class="btn btn-outline-light btn-sm">
+        <button class="btn btn-outline-light btn-sm" (click)="cerrarSesion()">
           Cerrar Sesión
         </button>
       </div>
-
     </div>
   </div>
 </nav>

@@ -14,11 +14,13 @@ import { RouterModule } from '@angular/router';
 export class InvitacionGrupoComponent implements OnInit{
 
   invitaciones: InvitacionGrupo[] = [];
-  idUsuario = Number(localStorage.getItem('idUsuario'));
+  idUsuario!: number;
 
   constructor(private grupoService: GrupoFamiliarService) {}
 
   ngOnInit(): void {
+    const usuario = JSON.parse(localStorage.getItem('usuario')!);
+    this.idUsuario = usuario.idUsuario;
     this.cargarInvitaciones();
   }
 

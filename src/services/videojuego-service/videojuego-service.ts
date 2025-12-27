@@ -1,9 +1,10 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Injectable, Sanitizer } from '@angular/core';
+import { catchError, map, Observable, of } from 'rxjs';
 import { Videojuego } from '../../models/empresa/videojuego';
 import { HttpClient } from '@angular/common/http';
 import { RestConstants } from '../../shared/rest-api-const';
 import { VideojuegoResponse } from '../../models/empresa/videojuego-response';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +13,7 @@ export class VideojuegoService {
 
   restConstants = new RestConstants();
 
-  constructor(private httpCliente: HttpClient) { }
+  constructor(private httpCliente: HttpClient, private sanitizer: DomSanitizer) { }
 
   crearVideojuego(videojuego: Videojuego): Observable<Videojuego> {
     return this.httpCliente.post<Videojuego>(`${this.restConstants.getApiURL()}videojuego/crear-videojuego`, videojuego);
@@ -35,9 +36,6 @@ export class VideojuegoService {
     return this.httpCliente.get<any>(`${this.restConstants.getApiURL()}videojuego/empresa/${idEmpresa}`);
   }
 
-  getImagenVideojuego(idImagen: number) {
-    return this.httpCliente.get(`${this.restConstants.getApiURL()}videojuego/imagen/${idImagen}`, { responseType: 'blob' });
-  }
 
   listarVideojuegoDisponibles() {
     return this.httpCliente.get<VideojuegoResponse[]>(`${this.restConstants.getApiURL()}videojuego/disponibles`);
@@ -56,6 +54,48 @@ export class VideojuegoService {
     if (empresa) params.empresa = empresa;
 
     return this.httpCliente.get<Videojuego[]>(`${this.restConstants.getApiURL()}videojuego/buscar-videojuego`, { params });
+  }
+
+  getImagenesVideojuego(idVideojuego: number): Observable<SafeResourceUrl[]> {
+    return this.httpCliente.get<number[]>(`${this.restConstants.getApiURL()}videojuego/${idVideojuego}/imagenes-urls`).pipe(
+      map(ids => {
+        if (!ids || ids.length === 0) return [];
+        return ids.map(id => this.getUrlImagen(id));
+      }),
+      catchError(() => of([]))
+    );
+  }
+
+  getImagenPorId(idImagen: number): Observable<SafeResourceUrl> {
+    return this.httpCliente.get(`${this.restConstants.getApiURL()}videojuego/imagen/${idImagen}`, {
+      responseType: 'blob'
+    }).pipe(
+      map((blob: Blob) => {
+        if (blob.size === 0) {
+          return this.getPlaceholder();
+        }
+        const url = URL.createObjectURL(blob);
+        return this.sanitizer.bypassSecurityTrustUrl(url);
+      }),
+      catchError(() => of(this.getPlaceholder()))
+    );
+  }
+
+  getUrlImagen(idImagen: number): string {
+    return `${this.restConstants.getApiURL()}videojuego/imagen/${idImagen}`;
+  }
+
+  private getPlaceholder(): SafeResourceUrl {
+    const svg = `
+      <svg width="300" height="200" xmlns="http://www.w3.org/2000/svg">
+        <rect width="100%" height="100%" fill="#f8f9fa"/>
+        <text x="50%" y="50%" font-size="18" text-anchor="middle" fill="#6c757d" dy=".3em">
+          Sin Imagen
+        </text>
+      </svg>`;
+    const blob = new Blob([svg], { type: 'image/svg+xml' });
+    const url = URL.createObjectURL(blob);
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
 }

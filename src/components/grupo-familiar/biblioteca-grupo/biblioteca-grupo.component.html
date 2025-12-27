@@ -1,0 +1,73 @@
+<div class="container mt-4">
+
+    <h2>Biblioteca Familiar Compartida</h2>
+
+    <!-- Selector de grupo -->
+    <div class="mb-4">
+        <label for="grupoSelect" class="form-label fw-bold">Selecciona tu grupo familiar:</label>
+        <select id="grupoSelect" class="form-select" [(ngModel)]="idGrupoSeleccionado" (change)="onGrupoChange()"
+            [disabled]="loadingGrupos">
+
+            <option [ngValue]="null">Cargando grupos...</option>
+            <option *ngIf="grupos.length === 0 && !loadingGrupos" [ngValue]="null">
+                No perteneces a ningún grupo familiar
+            </option>
+            <option *ngFor="let grupo of grupos" [ngValue]="grupo.idGrupo">
+                {{ grupo.nombreGrupo }}
+                <span class="text-muted small">
+                    ({{ esGrupoCreadoPorMi(grupo) ? 'Creado por ti' : 'Compartido' }})
+                </span>
+            </option>
+        </select>
+    </div>
+
+    <!-- Biblioteca de juegos -->
+    <div *ngIf="idGrupoSeleccionado; else noGrupo">
+        <h4 class="text-primary">Biblioteca de: <strong>{{ getNombreGrupoActual() }}</strong></h4>
+
+        <div *ngIf="loadingJuegos" class="text-center my-5">
+            <div class="spinner-border" role="status"></div>
+            <p>Cargando juegos...</p>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 col-lg-3 mb-4" *ngFor="let juego of juegos">
+                <div class="card h-100 shadow-sm">
+                    <img [src]="'data:image/jpeg;base64,' + juego.imagenBase64" class="card-img-top"
+                        alt="{{ juego.nombre }}" style="height: 200px; object-fit: cover;">
+
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">{{ juego.nombre }}</h5>
+
+                        <div class="mt-auto">
+                            <span class="badge mb-2" [class.bg-success]="juego.esPropio"
+                                [class.bg-info]="!juego.esPropio">
+                                {{ juego.esPropio ? 'Tuyo' : 'Prestado del grupo' }}
+                            </span>
+
+                            <button class="btn btn-primary w-100" (click)="toggleJuego(juego)"
+                                [disabled]="loadingJuegos">
+                                {{ juego.estado === 'INSTALADO' ? 'Desinstalar' : 'Instalar' }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="juegos.length === 0 && !loadingJuegos" class="alert alert-info">
+            Este grupo no tiene juegos compartidos aún.
+        </div>
+    </div>
+
+    <ng-template #noGrupo>
+        <div class="alert alert-warning text-center py-5">
+            <h4>Selecciona un grupo familiar para ver su biblioteca compartida</h4>
+            <p>Si no ves grupos, crea uno o pide que te inviten.</p>
+        </div>
+    </ng-template>
+
+    <button type="button" class="btn btn-secondary w-100" routerLink="/usuario-comun">
+        Regresar
+    </button>
+</div>

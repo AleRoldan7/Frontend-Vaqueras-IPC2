@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { VideojuegoService } from '../../../services/videojuego-service/videojuego-service';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { DomSanitizer, SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import Swal from 'sweetalert2';
@@ -45,13 +45,8 @@ export class VideojuegosCreadosComponent implements OnInit {
 
           idsImagenes.forEach((idImg: number) => {
 
-            this.videojuegoService.getImagenVideojuego(idImg)
-              .subscribe(blob => {
-
-                const url = URL.createObjectURL(blob);
-                const safeUrl: SafeUrl =
-                  this.sanitizer.bypassSecurityTrustUrl(url);
-
+            this.videojuegoService.getImagenPorId(idImg)
+              .subscribe((safeUrl: SafeResourceUrl) => {
                 juego.imagenes.push(safeUrl);
               });
           });
@@ -61,7 +56,7 @@ export class VideojuegosCreadosComponent implements OnInit {
 
 
   iniciarEdicion(juego: any): void {
-    this.videojuegoEditando = { ...juego }; 
+    this.videojuegoEditando = { ...juego };
   }
 
   cancelarEdicion(): void {

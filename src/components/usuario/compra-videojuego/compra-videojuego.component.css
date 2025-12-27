@@ -1,31 +1,71 @@
-.card img {
-  height: 200px;
-  object-fit: cover;
+/* CONTENEDOR GENERAL */
+.container {
+  max-width: 1200px;
 }
 
-.card-body {
-  display: flex;
-  flex-direction: column;
+/* TÍTULO PRINCIPAL */
+h2 {
+  color: #1e3a8a;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
-.card-title {
-  font-size: 1.25rem;
+/* INPUTS DEL FORMULARIO */
+.form-control {
+  border-radius: 10px;
+  border: 2px solid #d1d5db;
+  transition: 0.3s ease-in-out;
 }
 
-.card-text {
-  font-size: 0.95rem;
-  color: #555;
+.form-control:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 5px rgba(37, 99, 235, 0.5);
 }
 
-input.form-control {
-  border-radius: 0.5rem;
-}
-
-button.btn-primary {
-  background-color: #007bff;
+/* BOTÓN */
+.btn-primary {
+  background-color: #2563eb;
   border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  transition: 0.3s;
 }
 
-button.btn-primary:hover {
-  background-color: #0056b3;
+.btn-primary:hover {
+  background-color: #1e40af;
+}
+
+/* CARD DE VIDEOJUEGO */
+.card {
+  border-radius: 15px;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+/* IMÁGENES */
+.card img {
+  height: 220px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+/* TEXTO DETALLE */
+.card-body h5 {
+  font-weight: bold;
+  color: #1f2937;
+}
+
+.card-body p {
+  font-size: 0.9rem;
+  color: #374151;
+}
+
+/* FOOTER */
+.card-footer a {
+  border-radius: 8px;
+  padding: 6px 20px;
 }

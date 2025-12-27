@@ -24,12 +24,14 @@ export class GrupoFamiliarService {
     });
   }
 
-  actualizarGrupo(idGrupo: number, nombreNuevo: string): Observable<any> {
-    return this.httpCliente.put<any>(
+  actualizarGrupo(idGrupo: number, nombreNuevo: string) {
+    return this.httpCliente.put(
       `${this.restConstants.getApiURL()}grupo-familiar/actualizar/${idGrupo}`,
-      { nombreNuevo }
+      { nombreNuevo },
+      { responseType: 'text' }
     );
   }
+
 
   eliminarGrupo(idGrupo: number): Observable<any> {
     return this.httpCliente.delete(`${this.restConstants.getApiURL()}grupo-familiar/eliminar/${idGrupo}`);
@@ -40,18 +42,37 @@ export class GrupoFamiliarService {
   }
 
   eliminarUsuario(idGrupo: number, idUsuario: number): Observable<any> {
-    return this.httpCliente.delete(`${this.restConstants.getApiURL()}grupo-familiar/eliminar-usuario?idGrupo=${idGrupo}&idUsuario=${idUsuario}`);
+    return this.httpCliente.delete(`${this.restConstants.getApiURL()}grupo-familiar/eliminar-usuario?idGrupo=${idGrupo}&idUsuario=${idUsuario}`,
+      { responseType: 'text' });
   }
 
   enviarInvitacion(data: any): Observable<any> {
-    return this.httpCliente.post(`${this.restConstants.getApiURL()}grupo-familiar/invitar-usuario`, data, {responseType: 'text'});
+    return this.httpCliente.post(`${this.restConstants.getApiURL()}grupo-familiar/invitar-usuario`, data, { responseType: 'text' });
   }
 
   responderInvitacion(idGrupo: number, idUsuario: number, respuesta: 'ACEPTADA' | 'RECHAZADA'): Observable<any> {
-    return this.httpCliente.post(`${this.restConstants.getApiURL()}grupo-familiar/responder-invitacion`, { idGrupo, idUsuario, respuesta });
+    return this.httpCliente.post(`${this.restConstants.getApiURL()}grupo-familiar/responder-invitacion`, { idGrupo, idUsuario, respuesta }, { responseType: 'text'});
   }
 
   obtenerInvitacionesPendientes(idUsuario: number): Observable<InvitacionGrupo[]> {
     return this.httpCliente.get<InvitacionGrupo[]>(`${this.restConstants.getApiURL()}grupo-familiar/invitaciones-pendientes/${idUsuario}`);
   }
+
+  getMisGrupos(idUsuario: number) {
+    return this.httpCliente.get<any[]>(`${this.restConstants.getApiURL()}grupo-familiar/mis-grupos/${idUsuario}`);
+  }
+
+  getMisGruposConMiembros(idUsuario: number) {
+    return this.httpCliente.get<any[]>(
+      `${this.restConstants.getApiURL()}grupo-familiar/mis-grupos-con-miembros/${idUsuario}`
+    );
+  }
+
+
+  eliminarMiembro(idGrupo: number, idEliminar: number, idSolicitante: number) {
+    return this.httpCliente.delete(
+      `${this.restConstants.getApiURL()}grupo-familiar/${idGrupo}/miembro/${idEliminar}?idSolicitante=${idSolicitante}`
+    );
+  }
+
 }

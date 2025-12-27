@@ -9,4 +9,11 @@ import { Router, RouterModule } from '@angular/router';
 })
 export class PaginaPrincipalSistemaComponent {
 
+  constructor(private router: Router) {}
+  
+  cerrarSesion(): void {
+    localStorage.removeItem('usuario');
+    this.router.navigate(['/login']);
+  }
+
 }

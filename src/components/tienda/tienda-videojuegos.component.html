@@ -1,38 +1,31 @@
 <div class="container my-4">
     <div class="row g-4">
-
         <div class="col-md-4" *ngFor="let v of videojuegos">
-            <div class="card shadow h-100">
+            <div class="card shadow-sm h-100">
+                <img [src]="v.imagenPrincipal" class="card-img-top" alt="{{ v.titulo }}"
+                    style="height: 250px; object-fit: cover;" (error)="v.imagenPrincipal = cargarVideojuegos">
 
-                <div *ngIf="v.imagenes?.length">
-                    <img class="card-img-top" [src]="v.imagenes[0]">
-                </div>
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title fw-bold">{{ v.titulo }}</h5>
+                    <p class="card-text text-muted flex-grow-1">{{ v.descripcion }}</p>
 
-                <div class="card-body">
-                    <h5 class="fw-bold">{{ v.titulo }}</h5>
-                    <p class="text-muted">{{ v.descripcion }}</p>
-
-                    <div class="mb-2">
+                    <div class="mb-3">
                         <span class="badge bg-secondary me-1" *ngFor="let c of v.categorias">
                             {{ c }}
                         </span>
                     </div>
 
-                    <p class="fw-bold text-success">
+                    <p class="fw-bold text-success fs-4 mb-3">
                         Q {{ v.precio }}
                     </p>
 
-                    <button class="btn btn-primary w-100" (click)="comprarVideojuego(v.idVideojuego)">
-                        Comprar
+                    <button class="btn btn-primary w-100 mt-auto" (click)="comprarVideojuego(v.idVideojuego)">
+                        Comprar ahora
                     </button>
-
                 </div>
-
             </div>
         </div>
-
     </div>
-
     <div class="card-footer bg-white border-0 text-end">
         <a routerLink="/usuario-comun" class="btn btn-outline-secondary">
             Regresar

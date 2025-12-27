@@ -1,9 +1,11 @@
 export interface Biblioteca {
     idVideojuego: number;
-    tituloVideojuego: string;
-    precio: number;
-    descripcion: string;
-    fechaAdquisicion: string;
+    idCompra?: number; 
+    titulo: string; 
+    precioPagado: number;
+    clasificacionEdad: string;
+    fechaCompra: string; 
     estadoInstalacion: 'INSTALADO' | 'NO_INSTALADO';
-    imagenUrl?: string;
+    idImagen: number; 
+    descripcion: string;
 }

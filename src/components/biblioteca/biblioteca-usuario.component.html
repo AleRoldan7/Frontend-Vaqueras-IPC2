@@ -1,57 +1,128 @@
-<div class="container mt-4">
-    <h2 class="mb-4">Mi Biblioteca</h2>
-    <div class="row g-4">
-        <div class="col-md-3" *ngFor="let juego of biblioteca">
-            <div class="card h-100 shadow-sm">
-                <img [src]="juego.imagenUrl || 'assets/placeholder.png'" class="card-img-top"
-                    alt="{{juego.tituloVideojuego}}">
-                <div class="card-body d-flex flex-column">
-                    <h5 class="card-title">{{juego.tituloVideojuego}}</h5>
-                    <p class="card-text text-truncate">{{juego.descripcion}}</p>
-                    <p class="card-text mb-1"><strong>Precio:</strong> ${{juego.precio}}</p>
-                    <p class="card-text mb-1"><strong>Descrip:</strong> {{juego.descripcion}}</p>
-                    <p class="card-text mb-3"><strong>Estado:</strong> <span
-                            [ngClass]="{'text-success': juego.estadoInstalacion==='INSTALADO', 'text-danger': juego.estadoInstalacion==='NO_INSTALADO'}">{{juego.estadoInstalacion}}</span>
-                    </p>
-                    <div class="mt-auto d-flex justify-content-between">
-                        <button class="btn btn-success btn-sm" (click)="toggleInstalacion(juego)"
-                            [disabled]="juego.estadoInstalacion==='INSTALADO'">Instalar</button>
-                        <button class="btn btn-warning btn-sm" (click)="toggleInstalacion(juego)"
-                            [disabled]="juego.estadoInstalacion==='NO_INSTALADO'">Desinstalar</button>
-                    </div>
-                </div>
-            </div>
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-primary"><i class="bi bi-controller"></i> Mi Biblioteca de Juegos</h2>
+        <a routerLink="/usuario-comun" class="btn btn-outline-secondary shadow-sm">
+            <i class="bi bi-arrow-left"></i> Regresar al Panel
+        </a>
+    </div>
+
+    <div class="card shadow-lg border-0 mb-5">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-primary text-white">
+                    <tr>
+                        <th class="ps-3">Imagen</th>
+                        <th>Título</th>
+                        <th>Descripción</th>
+                        <th>Precio</th>
+                        <th>Fecha Compra</th>
+                        <th>Clasificación</th>
+                        <th>Estado</th>
+                        <th class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let juego of biblioteca">
+                        <td class="ps-3">
+                            <img [src]="obtenerUrlImagen(juego.idImagen)" alt="Portada" class="rounded shadow-sm"
+                                style="width: 70px; height: 45px; object-fit: cover;">
+                        </td>
+                        <td><strong>{{ juego.titulo }}</strong></td>
+                        <td><small class="text-muted text-truncate d-inline-block" style="max-width: 150px;">{{
+                                juego.descripcion }}</small></td>
+                        <td><span class="text-success fw-bold">{{ juego.precioPagado |
+                                currency:'GTQ':'symbol-narrow':'1.2-2' }}</span></td>
+                        <td>{{ juego.fechaCompra | date:'dd/MM/yyyy' }}</td>
+                        <td><span class="badge rounded-pill bg-info text-dark">{{ juego.clasificacionEdad }}</span></td>
+                        <td>
+                            <span class="badge shadow-sm"
+                                [ngClass]="juego.estadoInstalacion === 'INSTALADO' ? 'bg-success' : 'bg-warning text-dark'">
+                                <i class="bi"
+                                    [ngClass]="juego.estadoInstalacion === 'INSTALADO' ? 'bi-check-circle' : 'bi-pause-circle'"></i>
+                                {{ juego.estadoInstalacion || 'NO_INSTALADO' }}
+                            </span>
+                        </td>
+                        <td class="text-center">
+                            <button *ngIf="juego.estadoInstalacion !== 'INSTALADO'"
+                                (click)="actualizarEstado(juego, 'INSTALADO')"
+                                class="btn btn-primary btn-sm rounded-pill px-3">
+                                <i class="bi bi-download"></i> Instalar
+                            </button>
+                            <button *ngIf="juego.estadoInstalacion === 'INSTALADO'"
+                                (click)="actualizarEstado(juego, 'NO_INSTALADO')"
+                                class="btn btn-outline-danger btn-sm rounded-pill px-3">
+                                <i class="bi bi-trash"></i> Desinstalar
+                            </button>
+
+                            <div class="mt-2">
+                                <button class="btn btn-warning btn-sm w-100 mb-1"
+                                    (click)="calificar(juego.idVideojuego)">
+                                    <i class="bi bi-star"></i> Calificar
+                                </button>
+
+                                <button class="btn btn-primary btn-sm w-100 mb-1"
+                                    (click)="comentar(juego.idVideojuego)">
+                                    <i class="bi bi-chat-left-text"></i> Comentar
+                                </button>
+
+                              
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 
     <hr class="my-5">
 
-    <h2>Buscar Biblioteca de Otro Usuario</h2>
-    <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="Ingrese nickname" [(ngModel)]="busquedaNickname">
-        <button class="btn btn-primary" (click)="buscarBiblioteca()">Buscar</button>
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <h3><i class="bi bi-search"></i> Explorar Bibliotecas</h3>
+            <p class="text-muted">Busca el nickname de un amigo para ver su colección de juegos.</p>
+        </div>
+        <div class="col-md-6 d-flex align-items-center">
+            <div class="input-group shadow-sm">
+                <span class="input-group-text bg-white border-end-0"><i class="bi bi-person"></i></span>
+                <input type="text" class="form-control border-start-0" placeholder="Escribe el nickname aquí..."
+                    [(ngModel)]="busquedaNickname">
+                <button class="btn btn-primary px-4" (click)="buscarBiblioteca()">
+                    Buscar Amigo
+                </button>
+            </div>
+        </div>
     </div>
 
-    <div class="row g-4">
-        <div class="col-md-3" *ngFor="let juego of bibliotecaBusqueda">
-            <div class="card h-100 shadow-sm">
-                <img [src]="juego.imagenUrl || 'assets/placeholder.png'" class="card-img-top"
-                    alt="{{juego.tituloVideojuego}}">
+    <div class="row g-4" *ngIf="bibliotecaBusqueda.length > 0">
+        <div class="col-md-6 col-lg-3" *ngFor="let juego of bibliotecaBusqueda">
+            <div class="card h-100 border-0 shadow-sm hover-card">
+                <div class="position-relative">
+                    <img [src]="obtenerUrlImagen(juego.idImagen)" class="card-img-top" alt="{{juego.titulo}}"
+                        style="height: 160px; object-fit: cover;">
+                    <span class="position-absolute top-0 end-0 m-2 badge bg-dark opacity-75">
+                        {{juego.clasificacionEdad}}
+                    </span>
+                </div>
                 <div class="card-body">
-                    <h5 class="card-title">{{juego.tituloVideojuego}}</h5>
-                    <p class="card-text text-truncate">{{juego.descripcion}}</p>
-                    <p class="card-text mb-1"><strong>Precio:</strong> ${{juego.precio}}</p>
-                    <p class="card-text mb-1"><strong>Descripcion:</strong> {{juego.descripcion}}</p>
-                    <p class="card-text mb-1"><strong>Estado:</strong> {{juego.estadoInstalacion}}</p>
-                    <button class="btn btn-secondary btn-sm w-100" disabled>Solo lectura</button>
+                    <h6 class="card-title fw-bold mb-1">{{juego.titulo}}</h6>
+                    <p class="card-text small text-muted text-truncate mb-2">{{juego.descripcion}}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="text-success fw-bold">{{ juego.precioPagado |
+                            currency:'GTQ':'symbol-narrow':'1.2-2' }}</span>
+                        <small class="badge bg-light text-dark border">{{juego.estadoInstalacion}}</small>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent border-0 pt-0 pb-3">
+                    <button class="btn btn-light btn-sm w-100 border" disabled>
+                        <i class="bi bi-lock"></i> Vista de lectura
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="card-footer bg-white border-0 text-end">
-        <a routerLink="/usuario-comun" class="btn btn-outline-secondary">
-            Regresar
-        </a>
+    <div *ngIf="bibliotecaBusqueda.length === 0 && busquedaNickname" class="text-center py-5">
+        <i class="bi bi-emoji-frown display-4 text-muted"></i>
+        <p class="mt-2 text-muted">No se encontraron juegos para este usuario o el perfil es privado.</p>
     </div>
 </div>

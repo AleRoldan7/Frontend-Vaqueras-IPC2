@@ -1,75 +1,61 @@
 <nav class="navbar navbar-expand-lg header-custom shadow-sm">
   <div class="container-fluid">
-
-    <a class="navbar-brand logo-title text-white" routerLink="/">
-      {{ nombreUsuario || 'Usuario' }}
+    <a class="navbar-brand logo-title text-white" routerLink="/usuario-comun">
+      {{ nombreUsuario }}
     </a>
 
-
-    <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarEmpresa">
+    <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarUsuario">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse" id="navbarEmpresa">
-
+    <div class="collapse navbar-collapse" id="navbarUsuario">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0 align-items-lg-center">
-
         <li class="nav-item">
-          <a class="nav-link px-3" routerLink="/">Home</a>
-        </li>
-
-
-        <li class="nav-item">
-          <a class="nav-link px-3" routerLink="/categoria">Cartera Digital</a>
+          <a class="nav-link px-3" routerLink="/usuario-comun" routerLinkActive="active">Home</a>
         </li>
 
         <li class="nav-item">
-
-
-        <li class="nav-item">
-          <a class="nav-link px-3" routerLink="/biblioteca-usuario">Bibloteca</a>
+          <a class="nav-link px-3" routerLink="/usuario-comun/perfil" routerLinkActive="active">Perfil</a>
         </li>
 
         <li class="nav-item">
-          <a class="nav-link px-3" routerLink="/tienda-videojuegos">Tienda</a>
+          <a class="nav-link px-3" routerLink="/usuario-comun/biblioteca" routerLinkActive="active">Biblioteca</a>
         </li>
-
 
         <li class="nav-item">
-          <a class="nav-link px-3" routerLink="/buscar-videojuego">Buscar Videojuego</a>
+          <a class="nav-link px-3" routerLink="/usuario-comun/tienda" routerLinkActive="active">Tienda</a>
         </li>
 
+        <li class="nav-item">
+          <a class="nav-link px-3" routerLink="/usuario-comun/buscar-videojuego" routerLinkActive="active">Buscar</a>
+        </li>
 
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle px-3" role="button" data-bs-toggle="dropdown">
-            Reportes
+        <li class="nav-item">
+          <a class="nav-link px-3" routerLink="/usuario-comun/reseña-videojuegos" routerLinkActive="active">
+            Comentarios y Calificaciones
           </a>
-          <ul class="dropdown-menu dropdown-menu-dark">
-            <li><a class="dropdown-item" routerLink="/reporte/boleto">Boletos</a></li>
-            <li><a class="dropdown-item" routerLink="/reporte/sala-comentario">Comentarios</a></li>
-          </ul>
         </li>
 
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle px-3" role="button" data-bs-toggle="dropdown">
-            Grupo Familiares
+            Grupo Familiar
           </a>
           <ul class="dropdown-menu dropdown-menu-dark">
-            <li><a class="dropdown-item" routerLink="/crear-grupo-familiar">Crear Grupo</a></li>
-            <li><a class="dropdown-item" routerLink="/grupo/invitar-usuario">Enviar Invitacion</a></li>
-            <li><a class="dropdown-item" routerLink="/invitaciones-grupo">Invitaciones</a></li>
-            <li><a class="dropdown-item" routerLink="/listar-grupos-familiares">Lista Grupos</a></li>
+            <li><a class="dropdown-item" routerLink="/usuario-comun/crear-grupo-familiar">Crear Grupo</a></li>
+            <li><a class="dropdown-item" routerLink="/usuario-comun/invitaciones">Invitaciones</a></li>
+            <li><a class="dropdown-item" routerLink="/usuario-comun/lista-mis-grupos-usuario">Mis Grupos</a></li>
+            <li><a class="dropdown-item" routerLink="/usuario-comun/miembros-grupo-familiar">Miembros</a></li>
+            <li><a class="dropdown-item" routerLink="/usuario-comun/biblioteca-grupo">Biblioteca Grupal</a></li>
           </ul>
         </li>
       </ul>
 
       <div class="d-flex align-items-center gap-3">
         <input type="search" class="form-control search-input" placeholder="Buscar..." />
-        <button routerLink="/login" class="btn btn-outline-light btn-sm">
+        <button class="btn btn-outline-light btn-sm" (click)="cerrarSesion()">
           Cerrar Sesión
         </button>
       </div>
-
     </div>
   </div>
 </nav>

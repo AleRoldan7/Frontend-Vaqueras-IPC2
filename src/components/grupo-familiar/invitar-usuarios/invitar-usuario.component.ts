@@ -18,7 +18,7 @@ export class InvitarUsuarioComponent implements OnInit {
   usuarios: any[] = [];
   idGrupo!: number;
 
-  constructor(private grupoFamiliar: GrupoFamiliarService, private usuarioComun: ListaService, private route: ActivatedRoute) {}
+  constructor(private grupoFamiliar: GrupoFamiliarService, private usuarioComun: ListaService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.cargarUsuarios();
@@ -36,9 +36,10 @@ export class InvitarUsuarioComponent implements OnInit {
       idUsuario: idUsuario
     };
 
-    this.grupoFamiliar.enviarInvitacion(data).subscribe(
-      () =>
-        Swal.fire("Enviada", "Invitacion Enviada")
-    )
+    this.grupoFamiliar.enviarInvitacion(data).subscribe({
+      next: () => Swal.fire("Enviada", "Invitación enviada correctamente", "success"),
+      error: () => Swal.fire("Error", "No se pudo enviar la invitación", "error")
+    });
   }
+
 }

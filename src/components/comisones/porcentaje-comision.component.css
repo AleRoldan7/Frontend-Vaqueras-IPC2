@@ -1,0 +1,17 @@
+.table th {
+  background-color: #f8f9fa;
+}
+
+.input-group-text {
+  background-color: #e9ecef;
+  font-weight: bold;
+}
+
+.card {
+  border: none;
+  border-radius: 12px;
+}
+
+.bg-primary {
+  background: linear-gradient(135deg, #0d6efd, #0a58ca) !important;
+}

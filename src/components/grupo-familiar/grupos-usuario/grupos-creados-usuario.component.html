@@ -1,0 +1,54 @@
+<div class="container grupos-container">
+
+  <h2 class="text-center mb-4">Mis Grupos Familiares</h2>
+
+  <div *ngIf="grupos.length === 0" class="sin-grupos">
+    No has creado ningún grupo todavía.
+  </div>
+
+  <div class="row g-4">
+    <div class="col-md-4" *ngFor="let g of grupos">
+      <div class="card grupo-card shadow-sm">
+
+        <div class="grupo-header">
+          <h5 class="mb-0">{{ g.nombreGrupo }}</h5>
+        </div>
+
+        <div class="grupo-body">
+          <div class="grupo-actions">
+            <button class="btn btn-editar" (click)="editarGrupo(g)">
+              Editar
+            </button>
+            <button class="btn btn-eliminar" (click)="eliminarGrupo(g.idGrupo)">
+              Eliminar
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="grupoEditando" class="card mt-4 shadow">
+    <div class="card-body">
+      <h5>Editar grupo</h5>
+
+      <form [formGroup]="grupoForm" (ngSubmit)="actualizarGrupo()">
+        <div class="mb-3">
+          <input type="text" class="form-control" formControlName="nombreGrupo" />
+        </div>
+
+        <button type="submit" class="btn btn-success me-2">
+          Guardar
+        </button>
+        <button type="button" class="btn btn-secondary" (click)="cancelarEdicion()">
+          Cancelar
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <button type="button" class="btn btn-secondary" routerLink="/usuario-comun">
+    Volver
+  </button>
+</div>

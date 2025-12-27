@@ -1,14 +1,30 @@
-<div class="container mt-3">
-    <h3>Crear Grupo Familiar</h3>
-    <form [formGroup]="grupoForm" (ngSubmit)="crearGrupo()">
-        <div class="mb-3">
-            <label for="nombreGrupo" class="form-label">Nombre del Grupo</label>
-            <input type="text" id="nombreGrupo" class="form-control" formControlName="nombreGrupo">
-        </div>
-        <button type="submit" class="btn btn-success" [disabled]="grupoForm.invalid">Crear</button>
-    </form>
+<div class="container d-flex justify-content-center align-items-center mt-5">
+    <div class="card shadow p-4" style="max-width: 500px; width: 100%;">
+        <h3 class="text-center mb-4">Crear Grupo Familiar</h3>
 
-    <button type="button" class="btn btn-secondary" routerLink="/usuario-comun">
-        Volver al Login
-    </button>
+        <form [formGroup]="grupoForm" (ngSubmit)="crearGrupo()">
+
+            <div class="mb-3">
+                <label for="nombreGrupo" class="form-label fw-bold">Nombre del Grupo</label>
+                <input type="text" id="nombreGrupo" 
+                       class="form-control" 
+                       placeholder="Ej: Grupo de amigos"
+                       formControlName="nombreGrupo">
+            </div>
+
+            <button type="submit" 
+                    class="btn btn-success w-100"
+                    [disabled]="grupoForm.invalid">
+                Crear Grupo
+            </button>
+        </form>
+
+        <hr class="my-4">
+
+        <button type="button" 
+                class="btn btn-secondary w-100"
+                routerLink="/usuario-comun">
+            Regresar
+        </button>
+    </div>
 </div>

@@ -33,12 +33,10 @@
               <img [src]="img" class="d-block w-100" alt="Imagen videojuego">
             </div>
           </div>
-          <button class="carousel-control-prev" type="button" [attr.data-bs-target]="'#carousel' + i"
-            data-bs-slide="prev">
+          <button class="carousel-control-prev" type="button" [attr.data-bs-target]="'#carousel' + i" data-bs-slide="prev">
             <span class="carousel-control-prev-icon"></span>
           </button>
-          <button class="carousel-control-next" type="button" [attr.data-bs-target]="'#carousel' + i"
-            data-bs-slide="next">
+          <button class="carousel-control-next" type="button" [attr.data-bs-target]="'#carousel' + i" data-bs-slide="next">
             <span class="carousel-control-next-icon"></span>
           </button>
         </div>
@@ -50,6 +48,13 @@
           <p><strong>Clasificación:</strong> {{ juego.clasificacionEdad }}</p>
           <p><strong>Empresa:</strong> {{ juego.empresaNombre }}</p>
         </div>
+
+        <div class="card-footer bg-white border-0">
+          <button class="btn btn-success w-100" (click)="comprar(juego.idVideojuego)">
+            Comprar
+          </button>
+        </div>
+        
       </div>
     </div>
   </div>

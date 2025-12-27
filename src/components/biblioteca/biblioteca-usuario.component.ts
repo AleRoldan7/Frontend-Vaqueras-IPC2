@@ -24,17 +24,18 @@ export class BibliotecaUsuarioComponent implements OnInit {
   constructor(private bibliotecaService: BibliotecaService, private sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
-    const usuario = JSON.parse(localStorage.getItem('usuario')!);
-    this.usuarioId = usuario.idUsuario;
-    this.cargarBiblioteca();
+    const usuarioData = localStorage.getItem('usuario');
+    if (usuarioData) {
+      this.usuarioId = JSON.parse(usuarioData).idUsuario;
+      this.cargarBiblioteca();
+    }
   }
 
   cargarBiblioteca(): void {
-    this.bibliotecaService.obtenerBibliotecaUsuario(this.usuarioId)
-      .subscribe({
-        next: juegos => this.biblioteca = juegos,
-        error: err => console.error('Error al obtener biblioteca', err)
-      });
+    this.bibliotecaService.obtenerBibliotecaUsuario(this.usuarioId).subscribe({
+      next: (res) => this.biblioteca = res,
+      error: (err) => console.error('Error', err)
+    });
   }
 
   buscarBiblioteca(): void {
@@ -46,58 +47,67 @@ export class BibliotecaUsuarioComponent implements OnInit {
     }
   }
 
-  toggleInstalacion(juego: Biblioteca): void {
-    if (juego.estadoInstalacion === 'NO_INSTALADO') {
-      this.instalarJuego(juego);
-    } else {
-      this.desinstalarJuego(juego);
-    }
+  obtenerUrlImagen(idImagen: number): string {
+    return this.bibliotecaService.getImagenUrl(idImagen);
   }
 
-  instalarJuego(juego: Biblioteca): void {
-    this.bibliotecaService.cambiarEstadoInstalacion(this.usuarioId, juego.idVideojuego, 'INSTALADO')
+  actualizarEstado(juego: Biblioteca, nuevoEstado: 'INSTALADO' | 'NO_INSTALADO'): void {
+    this.bibliotecaService.cambiarEstadoInstalacion(this.usuarioId, juego.idVideojuego, nuevoEstado)
       .subscribe({
         next: () => {
-          juego.estadoInstalacion = 'INSTALADO';
-          Swal.fire({
-            icon: 'success',
-            title: 'Instalado',
-            text: `El juego "${juego.tituloVideojuego}" se ha instalado correctamente.`,
-            timer: 2000,
-            showConfirmButton: false
-          });
+          juego.estadoInstalacion = nuevoEstado;
+          Swal.fire('Éxito', `Juego ${nuevoEstado.toLowerCase()}`, 'success');
         },
-        error: () => {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: `No se pudo instalar "${juego.tituloVideojuego}".`
-          });
-        }
+        error: (e) => Swal.fire('Error', 'No se pudo actualizar el estado', 'error')
       });
   }
 
-  desinstalarJuego(juego: Biblioteca): void {
-    this.bibliotecaService.cambiarEstadoInstalacion(this.usuarioId, juego.idVideojuego, 'NO_INSTALADO')
-      .subscribe({
-        next: () => {
-          juego.estadoInstalacion = 'NO_INSTALADO';
-          Swal.fire({
-            icon: 'info',
-            title: 'Desinstalado',
-            text: `El juego "${juego.tituloVideojuego}" se ha desinstalado.`,
-            timer: 2000,
-            showConfirmButton: false
+  calificar(idVideojuego: number) {
+    Swal.fire({
+      title: 'Califica este juego',
+      input: 'number',
+      inputAttributes: { min: "1", max: "5" },
+      inputLabel: 'Ingresa una calificación del 1 al 5',
+      showCancelButton: true,
+      confirmButtonText: 'Guardar'
+    }).then(result => {
+      
+        const request = { calificacion: result.value };
+        this.bibliotecaService.calificarVideojuego(this.usuarioId, idVideojuego, request)
+          .subscribe({
+            next: () => Swal.fire("Calificado", "Calificación registrada", "success"),
+            error: e => {
+              
+              Swal.fire("Error", "Error", "error");
+            }
           });
-        },
-        error: () => {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: `No se pudo desinstalar "${juego.tituloVideojuego}".`
-          });
-        }
-      });
+      
+    });
   }
+
+
+  comentar(idVideojuego: number) {
+    Swal.fire({
+      title: 'Escribe tu comentario',
+      input: 'textarea',
+      showCancelButton: true,
+      confirmButtonText: 'Publicar'
+    }).then(result => {
+      
+        const request = { comentario: result.value };
+        this.bibliotecaService.comentarVideojuego(this.usuarioId, idVideojuego, request)
+          .subscribe({
+            next: () => Swal.fire("Publicado", "Tu comentario fue agregado", "success"),
+            error: e => {
+              
+              Swal.fire("Error", "Error", "error");
+            }
+          });
+      
+    });
+  }
+
+
+  
 
 }
