@@ -15,13 +15,21 @@ import { RouterModule } from '@angular/router';
 })
 export class RegistroEmpresaComponent implements OnInit {
 
-  admins: any[] = [];
+  nuevoAdmin = {
+    nombre: '',
+    correo: '',
+    password: '',
+    fechaNacimiento: ''
+  };
+
   nombreEmpresa: string = '';
   descripcionEmpresa: string = '';
-  adminSeleccionado: any = null;
   paisEmpresa: string = '';
+  adminSeleccionado: any = null;
 
-  constructor(private lista: ListaService, private empresaService: EmpresaService) { }
+  admins: any[] = [];
+
+  constructor(private lista: ListaService, private empresaService: EmpresaService) {}
 
   ngOnInit(): void {
     this.cargarAdmins();
@@ -29,47 +37,60 @@ export class RegistroEmpresaComponent implements OnInit {
 
   cargarAdmins() {
     this.lista.obtenerAdminEmpresa().subscribe({
-      next: (admins) => {
-        this.admins = Array.isArray(admins) ? admins : [admins];
-      },
-      error: (err) => {
-        Swal.fire('Error', 'No se pudieron cargar los administradores.', 'error');
-        console.error('Error al cargar administradores', err);
-      },
+      next: (data) => this.admins = Array.isArray(data) ? data : [data],
+      error: () => Swal.fire('Error', 'No se pudieron cargar los administradores', 'error')
     });
   }
+
+  registrarAdmin() {
+    if (!this.nuevoAdmin.nombre || !this.nuevoAdmin.correo || !this.nuevoAdmin.password) {
+      Swal.fire('Campos incompletos', 'Debe llenar todos los campos.', 'warning');
+      return;
+    }
+
+    this.empresaService.registrarAdminEmpresa(this.nuevoAdmin).subscribe({
+      next: (res) => {
+        Swal.fire('✔ Registro Exitoso', `Administrador creado con ID: ${res.idAdministrador}`, 'success');
+        this.nuevoAdmin = { nombre: '', correo: '', password: '', fechaNacimiento: ''};
+        this.cargarAdmins();
+      },
+      error: (err) => {
+        Swal.fire('❌ Error', err.error || 'No se pudo registrar el administrador.', 'error');
+      }
+    });
+  }
+
 
   seleccionarAdmin(admin: any) {
     this.adminSeleccionado = admin;
   }
 
+  // Crear y asignar empresa al administrador
   asignarEmpresa() {
-    if (!this.adminSeleccionado || !this.nombreEmpresa) {
-      Swal.fire('Error', 'Por favor complete todos los campos.', 'error');
+    if (!this.adminSeleccionado || !this.nombreEmpresa || !this.descripcionEmpresa || !this.paisEmpresa) {
+      Swal.fire('Error', 'Complete todos los campos.', 'error');
       return;
     }
-
 
     const empresaData = {
       nombreEmpresa: this.nombreEmpresa,
       descripcionEmpresa: this.descripcionEmpresa,
       idUsuario: this.adminSeleccionado.idUsuario,
-      paisEmpresa: this.paisEmpresa
+      paisEmpresa: this.paisEmpresa,
     };
 
     this.empresaService.crearEmpresa(empresaData).subscribe({
       next: () => {
-        Swal.fire('Éxito', 'Empresa registrada correctamente.', 'success');
+        Swal.fire('✔ Registro Exitoso', 'La empresa fue creada y asignada correctamente.', 'success');
         this.nombreEmpresa = '';
         this.descripcionEmpresa = '';
-        this.adminSeleccionado = null;
         this.paisEmpresa = '';
+        this.adminSeleccionado = null;
       },
       error: (err) => {
-        console.error('Error al registrar la empresa', err);
-        Swal.fire('Error', 'Hubo un problema al registrar la empresa.', 'error');
-        console.log(empresaData);
-      },
+        console.error(err);
+        Swal.fire('❌ Error', err.error || 'No se pudo registrar la empresa.', 'error');
+      }
     });
   }
 }

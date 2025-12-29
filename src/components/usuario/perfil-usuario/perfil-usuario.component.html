@@ -23,7 +23,8 @@
             <div class="row mb-4">
               <div class="col-md-6">
                 <label class="form-label fw-bold">Correo electrónico</label>
-                <input type="email" class="form-control form-control-lg" [(ngModel)]="usuario.correo" name="correo">
+                <input type="email" class="form-control form-control-lg" [(ngModel)]="usuario.correo" name="correo"
+                  disabled>
               </div>
               <div class="col-md-6">
                 <label class="form-label fw-bold">Cartera actual</label>
@@ -34,11 +35,15 @@
               </div>
             </div>
 
+            <div class="row mb-4">
+              <div class="col-md-6">
+                <label class="form-label fw-bold">Fecha De Nacimiento</label>
+                <input type="text" class="form-control form-control-lg" [(ngModel)]="usuario.fechaNacimiento" name="fechaNacimiento" disabled>
+              </div>
+            </div>
+
             <div class="text-center mb-5">
-              <button 
-                type="button" 
-                class="btn btn-success btn-lg px-5 me-3"
-                (click)="actualizarPerfil()"
+              <button type="button" class="btn btn-success btn-lg px-5 me-3" (click)="actualizarPerfil()"
                 [disabled]="!hayCambios() || cargando">
                 <span *ngIf="!cargando">Guardar cambios</span>
                 <span *ngIf="cargando"><span class="spinner-border spinner-border-sm me-2"></span>Guardando...</span>
@@ -48,23 +53,14 @@
 
           <hr class="my-5">
 
-          <!-- Agregar fondos -->
           <h4 class="text-center mb-4 text-primary">Recargar Cartera</h4>
           <div class="row justify-content-center mb-5">
             <div class="col-md-6">
               <div class="input-group input-group-lg">
                 <span class="input-group-text">Q</span>
-                <input 
-                  type="number" 
-                  class="form-control" 
-                  [(ngModel)]="montoFondos" 
-                  placeholder="0.00" 
-                  min="1" 
+                <input type="number" class="form-control" [(ngModel)]="montoFondos" placeholder="0.00" min="1"
                   step="0.01">
-                <button 
-                  class="btn btn-warning" 
-                  (click)="agregarFondos()"
-                  [disabled]="montoFondos <= 0 || cargando">
+                <button class="btn btn-warning" (click)="agregarFondos()" [disabled]="montoFondos <= 0 || cargando">
                   <i class="bi bi-wallet2 me-2"></i> Agregar fondos
                 </button>
               </div>
@@ -76,16 +72,12 @@
 
           <hr class="my-5">
 
-          <!-- Eliminar cuenta -->
           <div class="text-center">
             <h4 class="text-danger mb-4">Zona peligrosa</h4>
             <p class="text-muted mb-4">
               Una vez eliminada tu cuenta, no hay vuelta atrás. Se perderán todos tus datos, compras y progreso.
             </p>
-            <button 
-              class="btn btn-danger btn-lg px-5"
-              (click)="eliminarCuenta()"
-              [disabled]="cargando">
+            <button class="btn btn-danger btn-lg px-5" (click)="eliminarCuenta()" [disabled]="cargando">
               <i class="bi bi-trash me-2"></i> Eliminar mi cuenta
             </button>
           </div>

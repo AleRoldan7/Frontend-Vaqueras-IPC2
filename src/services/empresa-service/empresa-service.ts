@@ -7,19 +7,24 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class EmpresaService {
-  
+
   restConstants = new RestConstants();
 
-  constructor(private httpCliente : HttpClient) {}
+  constructor(private httpCliente: HttpClient) { }
 
-  crearEmpresa(data : any) : Observable<any> {
+  crearEmpresa(data: any): Observable<any> {
     return this.httpCliente.post<any>(`${this.restConstants.getApiURL()}empresa/crear-empresa`, data);
   }
+
+  registrarAdminEmpresa(admin: any): Observable<any> {
+    return this.httpCliente.post<any>(`${this.restConstants.getApiURL()}empresa/registrar-admin`,admin);
+  }
+
 
   getNombreEmpresa(idEmpresa: number): Observable<{ nombreEmpresa: string }> {
     return this.httpCliente.get<{ nombreEmpresa: string }>(`${this.restConstants.getApiURL()}empresa/nombre/${idEmpresa}`);
   }
-  
+
   listarEmpresas(): Observable<any[]> {
     return this.httpCliente.get<any[]>(`${this.restConstants.getApiURL()}empresa/listar`);
   }

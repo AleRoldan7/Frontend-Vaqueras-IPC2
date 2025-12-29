@@ -1,0 +1,85 @@
+<div class="container-fluid mt-4 px-5">
+  <div class="card shadow-lg border-0">
+    <div class="card-header bg-danger text-white text-center">
+      <h1 class="mb-0">REPORTE PEORES CALIFICACIONES </h1>
+    </div>
+
+    <div class="card-body">
+      <form class="row g-3 mb-4">
+        <div class="col-md-4">
+          <label class="form-label fw-bold">Buscar por título del juego</label>
+          <input type="text" class="form-control" placeholder="Ej. Juego prueba" 
+                 [(ngModel)]="filtroTitulo" name="filtroTitulo">
+        </div>
+
+        <div class="col-md-3">
+          <label class="form-label fw-bold">Fecha Inicio</label>
+          <input type="date" class="form-control" [(ngModel)]="filtroFechaInicio" name="filtroFechaInicio">
+        </div>
+
+        <div class="col-md-3">
+          <label class="form-label fw-bold">Fecha Fin</label>
+          <input type="date" class="form-control" [(ngModel)]="filtroFechaFin" name="filtroFechaFin">
+        </div>
+
+        <div class="col-md-2 d-flex align-items-end gap-2">
+          <button type="button" class="btn btn-success w-100" (click)="filtrarDatos()">
+            <i class="bi bi-funnel-fill"></i> FILTRAR
+          </button>
+
+          <button type="button" class="btn btn-warning w-100" (click)="limpiarFiltros()">
+            <i class="bi bi-eraser-fill"></i> LIMPIAR
+          </button>
+        </div>
+      </form>
+
+      <div class="table-responsive mt-4">
+        <table class="table table-hover table-bordered align-middle">
+          <thead class="table-dark text-center">
+            <tr>
+              <th>No.</th>
+              <th>Título del Juego</th>
+              <th>Calificación</th>
+              <th>Usuario</th>
+              <th>Fecha</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let c of calificacionesFiltradas; let i = index">
+              <td class="text-center fw-bold">{{ i + 1 }}</td>
+              <td class="fw-bold">{{ c.tituloJuego }}</td>
+              <td class="text-center">
+                <span class="badge bg-danger fs-5 px-3 py-2">{{ c.calificacion }}/5</span>
+              </td>
+              <td>{{ c.nickname }}</td>
+              <td class="text-center">{{ c.fecha | date:'shortDate' }}</td>
+            </tr>
+
+            <tr *ngIf="calificacionesFiltradas.length === 0 && !cargando">
+              <td colspan="5" class="text-center text-muted py-4">
+                No hay calificaciones bajas en el período seleccionado
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="text-end mt-4">
+        <button type="button" class="btn btn-danger px-4 me-3" (click)="descargarPDF()"
+                [disabled]="calificacionesFiltradas.length === 0">
+          <i class="bi bi-file-earmark-pdf-fill"></i> PDF
+        </button>
+
+        <button type="button" class="btn btn-info btn-lg px-4" routerLink="/admin-empresa">
+          <i class="bi bi-arrow-left-circle me-2"></i> REGRESAR
+        </button>
+      </div>
+
+      <div *ngIf="cargando" class="text-center py-4">
+        <div class="spinner-border text-danger" role="status">
+          <span class="visually-hidden">Cargando...</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

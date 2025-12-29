@@ -27,6 +27,25 @@ export class RegistroUsuarioComponent {
 
   registroUsuarioComun() {
     if (this.cargando) return;
+
+    const fechaNacimiento = new Date(this.fechaNacimiento);
+    const hoy = new Date();
+    const edad = hoy.getFullYear() - fechaNacimiento.getFullYear();
+    const mes = hoy.getMonth() - fechaNacimiento.getMonth();
+    const dia = hoy.getDate() - fechaNacimiento.getDate();
+
+    const edadReal = (mes < 0 || (mes === 0 && dia < 0)) ? edad - 1 : edad;
+
+    if (edadReal < 12) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Edad no permitida',
+        text: 'Debes tener al menos 12 años para registrarte en el sistema.',
+        confirmButtonColor: '#3085d6'
+      });
+      return; 
+    }
+
     this.cargando = true;
 
     const usuarioData = {
@@ -48,8 +67,8 @@ export class RegistroUsuarioComponent {
       error: (err) => {
         Swal.fire('Error', 'Hubo un problema al registrar el usuario.', 'error');
         console.error('Error al registrar usuario', err);
-        alert('Hubo un problema al registrar el usuario.');
       },
     });
   }
+
 }

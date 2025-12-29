@@ -3,6 +3,7 @@ import { ReporteService } from '../../../../services/reportes-service/reportes-s
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-ingreso-empresa',
@@ -12,44 +13,68 @@ import { RouterModule } from '@angular/router';
 })
 export class IngresoEmpresaComponent implements OnInit {
 
-  ingresosEmpresa: any[] = [];
-  fechaInicio: string | null = null;
-  fechaFin: string | null = null;
+  inicio: string = '';
+  fin: string = '';
+  datos: any[] = [];
+  datosFiltrados: any[] = [];
+  filtroEmpresa: string = '';
+  cargando = false;
 
-  constructor(private reporteIngreso: ReporteService) { }
+  constructor(private reporteService: ReporteService) {}
 
   ngOnInit(): void {
-    this.cargarIngresos();
+    this.setFechasDefault();
   }
 
-  cargarIngresos() {
-    this.reporteIngreso
-      .getIngresosPorEmpresa(this.fechaInicio, this.fechaFin)
-      .subscribe(data => {
-        this.ingresosEmpresa = data;
+  setFechasDefault() {
+    const hoy = new Date();
+    const año = hoy.getFullYear();
+    const mes = String(hoy.getMonth() + 1).padStart(2, '0');
+    this.fin = `${año}-${mes}-${String(hoy.getDate()).padStart(2, '0')}`;
+    this.inicio = `${año}-01-01`;
+    this.buscar();
+  }
+
+  buscar(): void {
+    this.cargando = true;
+    this.reporteService.getIngresosEmpresa(this.inicio, this.fin)
+      .subscribe({
+        next: (data) => {
+          this.datos = data;
+          this.filtrarDatos();
+          this.cargando = false;
+        },
+        error: () => {
+          Swal.fire('Error', 'No se pudieron cargar los ingresos', 'error');
+          this.cargando = false;
+        }
       });
   }
 
-  limpiarFiltros() {
-    this.fechaInicio = null;
-    this.fechaFin = null;
-    this.cargarIngresos();
+  filtrarDatos(): void {
+    this.datosFiltrados = this.datos.filter(d => 
+      d.nombreEmpresa.toLowerCase().includes(this.filtroEmpresa.toLowerCase())
+    );
   }
 
-  descargarIngresoPDF() {
-    this.reporteIngreso
-      .descargarPDFIngresosEmpresa(this.fechaInicio, this.fechaFin)
-      .subscribe(blob => {
-        this.descargarArchivo(blob, 'ReporteIngresosEmpresas.pdf');
+  limpiarFiltros(): void {
+    this.filtroEmpresa = '';
+    this.datosFiltrados = this.datos;
+  }
+
+  descargarPDF(): void {
+    this.reporteService.descargarPDFIngresos(this.inicio, this.fin)
+      .subscribe({
+        next: (blob) => {
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'IngresosEmpresas_Global.pdf';
+          a.click();
+          window.URL.revokeObjectURL(url);
+          Swal.fire('¡Éxito!', 'PDF descargado', 'success');
+        },
+        error: () => Swal.fire('Error', 'No se pudo generar el PDF', 'error')
       });
-  }
-
-  private descargarArchivo(blob: Blob, nombre: string) {
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = nombre;
-    a.click();
-    window.URL.revokeObjectURL(url);
   }
 }

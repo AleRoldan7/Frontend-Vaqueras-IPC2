@@ -1,0 +1,88 @@
+<div class="container-fluid mt-4 px-5">
+    <div class="card shadow-lg border-0">
+
+        <div class="card-header bg-primary text-white text-center">
+            <h1 class="mb-0">REPORTE DE VENTAS PROPIAS</h1>
+        </div>
+
+        <div class="card-body">
+
+            <form class="row g-3 mb-4">
+
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Buscar por título</label>
+                    <input type="text" class="form-control" placeholder="Ej. Dark Legend" [(ngModel)]="filtroNombre"
+                        name="filtroNombre">
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Fecha Inicio</label>
+                    <input type="date" class="form-control" [(ngModel)]="filtroFechaInicio" name="filtroFechaInicio">
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Fecha Fin</label>
+                    <input type="date" class="form-control" [(ngModel)]="filtroFechaFin" name="filtroFechaFin">
+                </div>
+
+                <div class="col-md-3 d-flex align-items-end gap-2">
+
+                    <button type="button" class="btn btn-success w-100" (click)="filtrarDatos()">
+                        <i class="bi bi-funnel-fill"></i> FILTRAR
+                    </button>
+
+                    <button type="button" class="btn btn-warning w-100" (click)="limpiarFiltros()">
+                        <i class="bi bi-eraser-fill"></i> LIMPIAR
+                    </button>
+
+                    <button type="button" class="btn btn-danger px-4" (click)="descargarPDF()"
+                        [disabled]="datos.length === 0">
+                        <i class="bi bi-file-earmark-pdf-fill"></i> PDF
+                    </button>
+
+                    <button type="button" class="btn btn-info btn-lg px-4" routerLink="/admin-empresa">
+                        REGRESAR
+                    </button>
+                </div>
+            </form>
+
+            <div class="table-responsive mt-4">
+                <table class="table table-hover table-bordered align-middle">
+                    <thead class="table-dark text-center">
+                        <tr>
+                            <th>No. Videojuego</th>
+                            <th>Título</th>
+                            <th>Monto Bruto</th>
+                            <th>Comisión Plataforma</th>
+                            <th>Ingreso Neto</th>
+                            <th>% Comisión</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let venta of datos" class="text-center">
+                            <td>{{ venta.idVideojuego }}</td>
+                            <td class="fw-bold text-start">{{ venta.titulo }}</td>
+                            <td class="text-success fw-bold">{{ venta.montoBruto | number:'1.2-2' }}</td>
+                            <td class="text-danger fw-bold">{{ venta.comisionPlataforma | number:'1.2-2' }}</td>
+                            <td class="text-primary fw-bold">{{ venta.ingresoNeto | number:'1.2-2' }}</td>
+                            <td>{{ venta.porcentajeComision }}%</td>
+                        </tr>
+
+                        <tr *ngIf="datos.length === 0 && !cargando">
+                            <td colspan="6" class="text-center text-muted py-4">
+                                No hay ventas registradas aún
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div *ngIf="cargando" class="text-center py-4">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Cargando...</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

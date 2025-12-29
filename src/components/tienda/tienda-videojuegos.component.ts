@@ -112,5 +112,19 @@ export class TiendaVideojuegosComponent {
       }
     });
   }
+
+  descripcionClasificacion(clasificacion: string): string {
+    switch (clasificacion) {
+      case 'TODOS':
+        return 'Apto para todos ';
+      case 'ADOLESCENTE':
+        return 'Recomendado para adolescentes (12+ años)';
+      case 'ADULTO':
+        return 'Solo para adultos jóvenes (16+ años)';
+      default:
+        return 'Clasificación no especificada';
+    }
+  }
+
 }
 

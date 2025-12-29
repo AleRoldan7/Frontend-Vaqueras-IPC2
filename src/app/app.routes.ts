@@ -29,6 +29,18 @@ import { BibliotecaGrupoComponent } from '../components/grupo-familiar/bibliotec
 import { ComentarioCalificacionComponent } from '../components/comentario-calificacion/comentario-calificacion.component';
 import { BuzonEmpresaComponent } from '../components/empresa/buzon-empresa/buzon-empresa.component';
 import { PerfilUsuarioComponent } from '../components/usuario/perfil-usuario/perfil-usuario.component';
+import { Top5juegosComponent } from '../components/reportes/reportes-empresa/top5-juegos/top5juegos.component';
+import { CalificacionPromedioComponent } from '../components/reportes/reportes-empresa/calificacion-promedio/calificacion-promedio.component';
+import { VentaPropiaComponent } from '../components/reportes/reportes-empresa/ventas-propias/venta-propia.component';
+import { MejoresComentariosComponent } from '../components/reportes/reportes-empresa/mejores-comentarios/mejores-comentarios.component';
+import { PeorCalificacionComponent } from '../components/reportes/reportes-empresa/peores-calificaciones/peor-calificacion.component';
+import { HistorialComprasComponent } from '../components/reportes/reportes-usuario/historial-compras/historial-compras.component';
+import { AnalisisBibliotecaComponent } from '../components/reportes/reportes-usuario/biblioteca-personal/analisis-biblioteca.component';
+import { CategoriaFavoritaComponent } from '../components/reportes/reportes-usuario/categoria-favorita/categoria-favorita.component';
+import { BibliotecaFamiliarComponent } from '../components/reportes/reportes-usuario/biblioteca-familiar/biblioteca-familiar.component';
+import { GananciaGlobalComponent } from '../components/reportes/reportes-sistema/ganacias-globales/ganancia-global.component';
+import { TopVentasComponent } from '../components/reportes/reportes-sistema/top-ventas-calidad/top-ventas.component';
+import { RankingUsuarioComponent } from '../components/reportes/reportes-sistema/ranking-usuario/ranking-usuario.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -61,6 +73,11 @@ export const routes: Routes = [
       { path: 'miembros-grupo-familiar', component: MiembrosGrupoComponent },
       { path: 'biblioteca-grupo', component: BibliotecaGrupoComponent },
       { path: 'grupo/:idGrupo/invitar-usuario', component: InvitarUsuarioComponent },
+
+      { path: 'reporte/historial-compras', component: HistorialComprasComponent },
+      { path: 'reporte/biblioteca-personal', component: AnalisisBibliotecaComponent },
+      { path: 'reporte/categoria-favorita', component: CategoriaFavoritaComponent },
+      { path: 'reporte/biblioteca-familiar', component: BibliotecaFamiliarComponent },
     ]
   },
 
@@ -75,6 +92,12 @@ export const routes: Routes = [
       { path: 'videojuego/:id/categorias', component: UnirVideojuegoCategoriaComponent },
       { path: 'actualizar-empresa', component: ActualizarEmpresaComponent },
       { path: 'buzon', component: BuzonEmpresaComponent },
+
+      { path: 'reporte/top5-juegos', component: Top5juegosComponent },
+      { path: 'reporte/calificacion', component: CalificacionPromedioComponent },
+      { path: 'reporte/venta-propia', component: VentaPropiaComponent },
+      { path: 'reporte/mejores-comentarios', component: MejoresComentariosComponent },
+      { path: 'reporte/peor-calificacion', component: PeorCalificacionComponent },
     ]
   },
 
@@ -88,8 +111,13 @@ export const routes: Routes = [
       { path: 'categorias', component: ActualizarEliminarCategoriaComponent },
       { path: 'usuarios', component: ListarUsuariosComponent },
       { path: 'comisiones', component: PorcentajeComisionComponent },
+      { path: 'crear-categoria', component: CrearCategoriaComponent },
+
+      { path: 'reportes/ganancia-global', component: GananciaGlobalComponent },
       { path: 'reportes/ingresos', component: IngresoEmpresaComponent },
-      { path: 'crear-categoria', component: CrearCategoriaComponent }, // Movida aquí para consistencia
+      { path: 'reportes/top-ventas-calidad', component: TopVentasComponent },
+      { path: 'reportes/ranking-usuario', component: RankingUsuarioComponent },
+    
     ]
   },
 ];

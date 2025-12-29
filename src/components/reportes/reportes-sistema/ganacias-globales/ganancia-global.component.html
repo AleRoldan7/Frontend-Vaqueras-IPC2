@@ -1,0 +1,55 @@
+<div class="container-fluid mt-4 px-5">
+    <div class="card shadow-lg border-0">
+        <div class="card-header bg-gradient-dark text-white text-center py-4">
+            <h1 class="mb-0">GANANCIAS GLOBALES DEL SISTEMA</h1>
+            <h4 class="mt-2">Plataforma Completa</h4>
+        </div>
+
+        <div class="card-body py-5">
+            <div *ngIf="cargando" class="text-center py-5">
+                <div class="spinner-border text-light" role="status"></div>
+            </div>
+
+            <div *ngIf="!cargando" class="row g-4 text-center">
+                <div class="col-md-6">
+                    <div class="card bg-dark text-white h-100 border-purple">
+                        <div class="card-body">
+                            <h5 class="card-title">Ingresos Totales</h5>
+                            <h2 class="display-4 fw-bold">Q{{ datos.totalIngresos | number:'1.2-2' }}</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card bg-purple text-white h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Ingreso Empresas</h5>
+                            <h2 class="display-4 fw-bold">Q{{ datos.totalEmpresas | number:'1.2-2' }}</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card bg-verde text-white h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Ganancia</h5>
+                            <h2 class="display-4 fw-bold">Q{{ datos.comisionPlataforma | number:'1.2-2' }}</h2>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="text-end mt-5">
+                <button class="btn btn-light px-4 me-3" (click)="descargarPDF()">
+                    <i class="bi bi-file-earmark-pdf-fill"></i> PDF
+                </button>
+
+                <button class="btn btn-celeste btn-lg px-4" routerLink="/admin-sistema">
+                    <i class="bi bi-arrow-left-circle me-2"></i> REGRESAR
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -27,7 +27,31 @@
         <li class="nav-item">
           <a class="nav-link px-3" routerLink="/admin-empresa/buzon" routerLinkActive="active">Buzón</a>
         </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle px-3" role="button" data-bs-toggle="dropdown">
+            Reportes
+          </a>
+          <ul class="dropdown-menu dropdown-menu-dark">
+            <li><a class="dropdown-item" routerLink="/admin-empresa/reporte/top5-juegos">Top 5</a></li>
+            <li><a class="dropdown-item" routerLink="/admin-empresa/reporte/venta-propia">Ventas Propias</a></li>
+            <li><a class="dropdown-item" routerLink="/admin-empresa/reporte/calificacion">Calificacion Promedio</a></li>
+            <li><a class="dropdown-item" routerLink="/admin-empresa/reporte/mejores-comentarios">Mejores Comentarios</a></li>
+            <li><a class="dropdown-item" routerLink="/admin-empresa/reporte/peor-calificacion">Peores Calificaciones</a></li>
+          </ul>
+        </li>
+
       </ul>
+
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle px-3" role="button" data-bs-toggle="dropdown">
+          Reportes
+        </a>
+        <ul class="dropdown-menu dropdown-menu-dark">
+          <li><a class="dropdown-item" routerLink="/admin-empresa/reporte/top5-juegos">Top 5</a></li>
+          <li><a class="dropdown-item" routerLink="/admin-empresa/videojuegos">Mis Videojuegos</a></li>
+        </ul>
+      </li>
 
       <div class="d-flex align-items-center gap-3">
         <input type="search" class="form-control search-input" placeholder="Buscar..." />

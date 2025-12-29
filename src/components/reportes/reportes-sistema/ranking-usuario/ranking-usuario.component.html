@@ -1,0 +1,79 @@
+<div class="container-fluid mt-4 px-5">
+    <div class="card shadow-lg border-0">
+        <div class="card-header bg-gradient-dark text-white text-center py-4">
+            <h1 class="mb-0">RANKING DE USUARIOS POR GASTO</h1>
+            <h4 class="mt-2">Top jugadores de la plataforma</h4>
+        </div>
+
+        <div class="card-body">
+            <form class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <label class="form-label fw-bold text-light">Buscar por nickname</label>
+                    <input type="text" class="form-control" placeholder="Ej. DarkLegend" [(ngModel)]="filtroNickname"
+                        name="filtroNickname">
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label fw-bold text-light">Fecha Inicio</label>
+                    <input type="date" class="form-control" [(ngModel)]="inicio" (change)="buscar()">
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label fw-bold text-light">Fecha Fin</label>
+                    <input type="date" class="form-control" [(ngModel)]="fin" (change)="buscar()">
+                </div>
+
+                <div class="col-md-2 d-flex align-items-end gap-2">
+                    <button type="button" class="btn btn-light w-100" (click)="buscar()">
+                        <i class="bi bi-funnel-fill"></i> BUSCAR
+                    </button>
+                    <button type="button" class="btn btn-secondary w-100" (click)="limpiarFiltros()">
+                        <i class="bi bi-eraser-fill"></i> LIMPIAR
+                    </button>
+                </div>
+            </form>
+
+            <div class="table-responsive mt-4">
+                <table class="table table-hover table-bordered align-middle">
+                    <thead class="table-dark text-center">
+                        <tr>
+                            <th>Posición</th>
+                            <th>Nickname</th>
+                            <th>Total Comentarios</th>
+                            <th>Número de Compras</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of datosFiltrados; let i = index">
+                            <td class="text-center fw-bold fs-4 text-purple">{{ i + 1 }}</td>
+                            <td class="fw-bold fs-5">{{ item.nickname }}</td>
+                            <td class="text-success text-center fw-bold">{{ item.totalComentarios  }}</td>
+                            <td class="text-center">{{ item.totalCompras }}</td>
+                        </tr>
+
+                        <tr *ngIf="datosFiltrados.length === 0 && !cargando">
+                            <td colspan="4" class="text-center text-muted py-4">
+                                No hay usuarios con compras en el período seleccionado
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="text-end mt-4">
+                <button class="btn btn-outline-warning btn-lg" (click)="descargarPDF()">
+                    <i class="bi bi-file-earmark-pdf"></i> Descargar PDF
+                </button>
+
+
+                <button class="btn btn btn-celeste btn-lg px-4" routerLink="/admin-sistema">
+                    <i class="bi bi-arrow-left-circle me-2"></i> REGRESAR
+                </button>
+            </div>
+
+            <div *ngIf="cargando" class="text-center py-4">
+                <div class="spinner-border text-light" role="status"></div>
+            </div>
+        </div>
+    </div>
+</div>

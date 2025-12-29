@@ -1,0 +1,52 @@
+<div class="container-fluid mt-4 px-5">
+    <div class="card shadow-lg border-0">
+        <div class="card-header bg-gradient-dark text-white text-center py-4">
+            <h1 class="mb-0">TOP VENTAS DE LA PLATAFORMA</h1>
+            <h4 class="mt-2">Juegos más vendidos globalmente</h4>
+        </div>
+
+        <div class="card-body">
+            <div class="table-responsive mt-4">
+                <table class="table table-hover table-bordered align-middle">
+                    <thead class="table-dark text-center">
+                        <tr>
+                            <th>Posición</th>
+                            <th>Id. Videojuego</th>
+                            <th>Título del Juego</th>
+                            <th>Unidades Vendidas</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of datos; let i = index">
+                            <td class="text-center fw-bold fs-4 text-purple">{{ i + 1 }}</td>
+                            <td class="fw-bold fs-5">{{ item.idVideojuego }}</td>
+                            <td class="fw-bold fs-5">{{ item.titulo }}</td>
+                            <td class="text-center text-success fw-bold">{{ item.ventas }}</td>
+                        </tr>
+
+                        <tr *ngIf="datos.length === 0 && !cargando">
+                            <td colspan="5" class="text-center text-muted py-4">
+                                No hay datos de ventas disponibles
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="text-end mt-4">
+                <button class="btn btn-outline-warning btn-lg" (click)="descargarPDF()">
+                    <i class="bi bi-file-earmark-pdf"></i> Descargar PDF
+                </button>
+
+
+                <button class="btn btn btn-celeste btn-lg px-4" routerLink="/admin-sistema">
+                    <i class="bi bi-arrow-left-circle me-2"></i> REGRESAR
+                </button>
+            </div>
+
+            <div *ngIf="cargando" class="text-center py-4">
+                <div class="spinner-border text-light" role="status"></div>
+            </div>
+        </div>
+    </div>
+</div>

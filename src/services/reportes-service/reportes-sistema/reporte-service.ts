@@ -9,58 +9,55 @@ import { Observable } from 'rxjs';
 })
 export class ReporteService {
 
-  restConstants = new RestConstants();
+  private apiUrl = new RestConstants().getApiURL() + 'reportes/';
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private http: HttpClient) { }
 
-  /*Url para reportes de sistema */
-  getGananciasGlobales() {
-    return this.httpClient.get<any>(`${this.restConstants.getApiURL()}reportes/ganancias-globales`);
+  // Ganancias globales
+  getGananciasGlobales(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}ganancias-globales`);
   }
 
-   getIngresosPorEmpresa(fechaInicio?: string | null, fechaFin?: string | null) {
-
-    let params = new HttpParams();
-
-    if (fechaInicio) {
-      params = params.set('fechaInicio', fechaInicio);
-    }
-    if (fechaFin) {
-      params = params.set('fechaFin', fechaFin);
-    }
-
-    return this.httpClient.get<any[]>(
-      `${this.restConstants.getApiURL()}reportes/ingresos-empresa`,
-      { params }
-    );
+  descargarPDFGanancias(): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}ganancias-globales/pdf`, { responseType: 'blob' });
   }
 
-  descargarPDFIngresosEmpresa(fechaInicio?: string | null, fechaFin?: string | null) {
-
-    let params = new HttpParams();
-
-    if (fechaInicio) {
-      params = params.set('fechaInicio', fechaInicio);
-    }
-    if (fechaFin) {
-      params = params.set('fechaFin', fechaFin);
-    }
-
-    return this.httpClient.get(
-      `${this.restConstants.getApiURL()}reportes/ingresos-empresa/pdf`,
-      {
-        params,
-        responseType: 'blob'
-      }
-    );
+  // Top ventas
+  getTopVentas(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}top-ventas`);
   }
 
-  descargarPDFGanancias() {
-    return this.httpClient.get(`${this.restConstants.getApiURL()}reportes/ganancias-globales/pdf`, { responseType: 'blob' });
+  descargarPDFTopVentas(): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}top-ventas/pdf`, { responseType: 'blob' });
   }
 
- 
+  // Ingresos por empresa (con fechas)
+  getIngresosEmpresa(inicio?: string, fin?: string): Observable<any[]> {
+    let params: any = {};
+    if (inicio) params.fechaInicio = inicio;
+    if (fin) params.fechaFin = fin;
+    return this.http.get<any[]>(`${this.apiUrl}ingresos-empresa`, { params });
+  }
 
+  descargarPDFIngresos(inicio?: string, fin?: string): Observable<Blob> {
+    let params: any = {};
+    if (inicio) params.fechaInicio = inicio;
+    if (fin) params.fechaFin = fin;
+    return this.http.get(`${this.apiUrl}ingresos-empresa/pdf`, { params, responseType: 'blob' });
+  }
 
+  // Ranking usuarios (con fechas)
+  getRankingUsuarios(inicio?: string, fin?: string): Observable<any[]> {
+    let params: any = {};
+    if (inicio) params.fechaInicio = inicio;
+    if (fin) params.fechaFin = fin;
+    return this.http.get<any[]>(`${this.apiUrl}ranking-usuarios`, { params });
+  }
 
+  descargarPDFRanking(inicio?: string, fin?: string): Observable<Blob> {
+    let params: any = {};
+    if (inicio) params.fechaInicio = inicio;
+    if (fin) params.fechaFin = fin;
+    return this.http.get(`${this.apiUrl}ranking-usuarios/pdf`, { params, responseType: 'blob' });
+  }
 }
