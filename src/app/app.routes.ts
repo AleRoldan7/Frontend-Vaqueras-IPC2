@@ -108,6 +108,7 @@ export const routes: Routes = [
     children: [
       { path: '', component: PaginaPrincipalSistemaComponent },
       { path: 'solicitudes', component: SolicitudCategoriasComponent },
+      { path: 'crear-categoria', component: CrearCategoriaComponent },
       { path: 'categorias', component: ActualizarEliminarCategoriaComponent },
       { path: 'usuarios', component: ListarUsuariosComponent },
       { path: 'comisiones', component: PorcentajeComisionComponent },

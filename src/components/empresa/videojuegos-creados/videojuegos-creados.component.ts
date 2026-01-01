@@ -38,21 +38,25 @@ export class VideojuegosCreadosComponent implements OnInit {
         this.videojuegos = response.videojuegos;
 
         this.videojuegos.forEach((juego: any) => {
-
           juego.imagenes = [];
-
           const idsImagenes = response.imagenes[juego.idVideojuego] || [];
 
-          idsImagenes.forEach((idImg: number) => {
+          if (idsImagenes.length === 0) {
+            juego.imagenes.push(juego.imagenes.push(this.videojuegoService['getPlaceholder']));
+            return;
+          }
 
-            this.videojuegoService.getImagenPorId(idImg)
-              .subscribe((safeUrl: SafeResourceUrl) => {
-                juego.imagenes.push(safeUrl);
-              });
+          idsImagenes.forEach((idImg: number) => {
+            this.videojuegoService.getImagenPorId(idImg).subscribe(url => {
+              console.log("Imagen cargada:", url);
+              juego.imagenes.push(url);
+            });
           });
         });
+
       });
   }
+
 
 
   iniciarEdicion(juego: any): void {

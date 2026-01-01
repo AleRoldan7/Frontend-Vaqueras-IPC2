@@ -1,63 +1,67 @@
-<div>
-    <h2 class="mb-4">Actualizar o Eliminar Categorías</h2>
-    <!-- LISTADO -->
-    <div class="row g-3">
+<div class="container py-4">
 
+    <!-- TÍTULO -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold">Actualizar o Eliminar Categorías</h2>
+        <a routerLink="/admin-sistema" class="btn btn-outline-secondary btn-sm">
+            <i class="bi bi-arrow-left"></i> Regresar
+        </a>
+    </div>
+
+    <!-- LISTADO DE CATEGORÍAS -->
+    <div class="row g-4">
         <div class="col-md-4" *ngFor="let cat of categorias">
-
-            <div class="card categoria-card h-100 shadow-sm">
+            <div class="card h-100 shadow-sm border-0">
                 <div class="card-body">
-
-                    <h5 class="fw-bold">{{ cat.nombreCategoria }}</h5>
+                    <h5 class="fw-bold text-primary">{{ cat.nombreCategoria }}</h5>
                     <p class="text-muted">{{ cat.descripcionCategoria }}</p>
 
-                    <div class="d-flex gap-2">
-                        <button class="btn btn-outline-primary w-100" (click)="editarCategoria(cat)">
-                            Editar
+                    <div class="d-flex gap-2 mt-3">
+                        <button class="btn btn-sm btn-outline-primary w-50"
+                                (click)="editarCategoria(cat)">
+                            <i class="bi bi-pencil"></i> Editar
                         </button>
 
-                        <button class="btn btn-outline-danger w-100" (click)="eliminarCategoria(cat.idCategoria)">
-                            Eliminar
+                        <button class="btn btn-sm btn-outline-danger w-50"
+                                (click)="eliminarCategoria(cat.idCategoria)">
+                            <i class="bi bi-trash"></i> Eliminar
                         </button>
                     </div>
-
                 </div>
             </div>
-
         </div>
-
     </div>
-    <div *ngIf="mostrarFormularioEdicion" class="card mt-4 shadow-sm">
+
+    <!-- FORMULARIO DE EDICIÓN -->
+    <div *ngIf="mostrarFormularioEdicion" class="card mt-5 border-0 shadow-sm">
+        <div class="card-header bg-primary text-white fw-bold">
+            Editar Categoría
+        </div>
         <div class="card-body">
 
-            <h5 class="fw-bold mb-3">Editar Categoría</h5>
-
             <div class="mb-3">
-                <label class="form-label">Nombre</label>
-                <input type="text" class="form-control" [(ngModel)]="categoriaEditada.nombreCategoria" />
+                <label class="form-label fw-semibold">Nombre</label>
+                <input type="text" class="form-control"
+                       [(ngModel)]="categoriaEditada.nombreCategoria">
             </div>
 
             <div class="mb-3">
-                <label class="form-label">Descripción</label>
-                <textarea class="form-control" rows="3" [(ngModel)]="categoriaEditada.descripcionCategoria"></textarea>
+                <label class="form-label fw-semibold">Descripción</label>
+                <textarea rows="3" class="form-control"
+                          [(ngModel)]="categoriaEditada.descripcionCategoria"></textarea>
             </div>
 
             <div class="d-flex gap-2">
                 <button class="btn btn-success w-100" (click)="guardarEdicion()">
-                    Guardar Cambios
+                    <i class="bi bi-check-circle"></i> Guardar Cambios
                 </button>
 
                 <button class="btn btn-outline-secondary w-100" (click)="cancelarEdicion()">
-                    Cancelar
+                    <i class="bi bi-x-circle"></i> Cancelar
                 </button>
             </div>
 
         </div>
     </div>
 
-    <div class="card-footer bg-white border-0 text-end">
-        <a routerLink="/admin-sistema" class="btn btn-outline-secondary">
-            Regresar
-        </a>
-    </div>
 </div>

@@ -109,7 +109,7 @@ export class CrearVideojuegoComponent implements OnInit {
           Swal.fire('Éxito', 'Imágenes subidas', 'success');
           this.imagenesSeleccionadas = [];
           this.router.navigate([
-            '/empresa/videojuego',
+            '/admin-empresa/videojuego',
             this.idVideojuegoCreado,
             'categorias'
           ]);

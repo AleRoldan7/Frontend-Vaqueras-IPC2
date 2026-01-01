@@ -4,7 +4,7 @@ import { Videojuego } from '../../models/empresa/videojuego';
 import { HttpClient } from '@angular/common/http';
 import { RestConstants } from '../../shared/rest-api-const';
 import { VideojuegoResponse } from '../../models/empresa/videojuego-response';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { DomSanitizer, SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
 
 @Injectable({
   providedIn: 'root',
@@ -56,34 +56,24 @@ export class VideojuegoService {
     return this.httpCliente.get<Videojuego[]>(`${this.restConstants.getApiURL()}videojuego/buscar-videojuego`, { params });
   }
 
-  getImagenesVideojuego(idVideojuego: number): Observable<SafeResourceUrl[]> {
-    return this.httpCliente.get<number[]>(`${this.restConstants.getApiURL()}videojuego/${idVideojuego}/imagenes-urls`).pipe(
-      map(ids => {
-        if (!ids || ids.length === 0) return [];
-        return ids.map(id => this.getUrlImagen(id));
-      }),
-      catchError(() => of([]))
+  getImagenesVideojuego(idVideojuego: number): Observable<number[]> {
+    return this.httpCliente.get<number[]>(
+      `${this.restConstants.getApiURL()}videojuego/${idVideojuego}/imagenes`
     );
   }
 
-  getImagenPorId(idImagen: number): Observable<SafeResourceUrl> {
-    return this.httpCliente.get(`${this.restConstants.getApiURL()}videojuego/imagen/${idImagen}`, {
-      responseType: 'blob'
-    }).pipe(
-      map((blob: Blob) => {
-        if (blob.size === 0) {
-          return this.getPlaceholder();
-        }
-        const url = URL.createObjectURL(blob);
-        return this.sanitizer.bypassSecurityTrustUrl(url);
-      }),
-      catchError(() => of(this.getPlaceholder()))
-    );
+
+  getImagenPorId(idImagen: number): Observable<SafeUrl> {
+    return this.httpCliente.get(`${this.restConstants.getApiURL()}videojuego/imagen/${idImagen}` , { responseType: 'blob' })
+      .pipe(
+        map(blob => {
+          const objectURL = URL.createObjectURL(blob);
+          return this.sanitizer.bypassSecurityTrustUrl(objectURL);
+        })
+      );
   }
 
-  getUrlImagen(idImagen: number): string {
-    return `${this.restConstants.getApiURL()}videojuego/imagen/${idImagen}`;
-  }
+
 
   private getPlaceholder(): SafeResourceUrl {
     const svg = `

@@ -8,17 +8,20 @@
 
       <div class="card videojuego-card h-100 shadow-sm">
 
-        <!-- Carousel de imágenes -->
-        <div *ngIf="juego.imagenes.length > 0" id="carousel{{ i }}" class="carousel slide" data-bs-ride="carousel">
+        <div *ngIf="juego.imagenes.length > 0" [id]="'carousel' + i" class="carousel slide" data-bs-ride="carousel">
           <div class="carousel-inner">
             <div class="carousel-item" *ngFor="let img of juego.imagenes; let first = first" [class.active]="first">
-              <img [src]="img" class="d-block w-100 videojuego-img" alt="Imagen videojuego" />
+              <img [src]="img" class="d-block w-100 videojuego-img" alt="Imagen videojuego"
+                style="min-height: 200px; object-fit: cover;" />
+
             </div>
           </div>
-          <button class="carousel-control-prev" type="button" [attr.data-bs-target]="'#carousel' + i" data-bs-slide="prev">
+          <button class="carousel-control-prev" type="button" [attr.data-bs-target]="'#carousel' + i"
+            data-bs-slide="prev">
             <span class="carousel-control-prev-icon"></span>
           </button>
-          <button class="carousel-control-next" type="button" [attr.data-bs-target]="'#carousel' + i" data-bs-slide="next">
+          <button class="carousel-control-next" type="button" [attr.data-bs-target]="'#carousel' + i"
+            data-bs-slide="next">
             <span class="carousel-control-next-icon"></span>
           </button>
         </div>
@@ -40,17 +43,18 @@
           <!-- Vista edición -->
           <div *ngIf="videojuegoEditando?.idVideojuego === juego.idVideojuego">
             <input class="form-control mb-2" [(ngModel)]="videojuegoEditando.tituloVideojuego" placeholder="Título">
-            <textarea class="form-control mb-2" [(ngModel)]="videojuegoEditando.descripcion" placeholder="Descripción"></textarea>
+            <textarea class="form-control mb-2" [(ngModel)]="videojuegoEditando.descripcion"
+              placeholder="Descripción"></textarea>
             <input type="number" class="form-control mb-2" [(ngModel)]="videojuegoEditando.precio" placeholder="Precio">
-            <input class="form-control mb-2" [(ngModel)]="videojuegoEditando.clasificacionEdad" placeholder="Clasificación">
+            <input class="form-control mb-2" [(ngModel)]="videojuegoEditando.clasificacionEdad"
+              placeholder="Clasificación">
             <input class="form-control mb-2" [(ngModel)]="videojuegoEditando.recursosMinimos" placeholder="Requisitos">
           </div>
 
           <!-- Botones -->
           <div class="mt-auto d-flex gap-2">
             <button *ngIf="videojuegoEditando?.idVideojuego !== juego.idVideojuego"
-                    class="btn btn-outline-primary w-100"
-                    (click)="iniciarEdicion(juego)">
+              class="btn btn-outline-primary w-100" (click)="iniciarEdicion(juego)">
               Editar
             </button>
 
@@ -59,7 +63,7 @@
               <button class="btn btn-secondary w-50" (click)="cancelarEdicion()">Cancelar</button>
             </div>
 
-           
+
           </div>
 
         </div>

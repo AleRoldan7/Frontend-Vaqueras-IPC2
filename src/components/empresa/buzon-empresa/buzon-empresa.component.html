@@ -1,65 +1,79 @@
-<div class="container mt-5">
+<div class="container mt-5 mb-5">
+
+  <div class="mb-4">
+    <a routerLink="/admin-empresa" class="btn btn-outline-secondary rounded-pill shadow-sm">
+      <i class="bi bi-arrow-left-circle me-2"></i> Regresar
+    </a>
+  </div>
+
   <div class="row justify-content-center">
     <div class="col-lg-10">
-      <div class="card shadow-lg border-0">
-        <div class="card-header bg-gradient-primary text-white py-4">
+
+      <div class="card shadow-lg border-0 rounded-4">
+
+        <div class="card-header text-white py-4 rounded-top"
+             style="background: linear-gradient(90deg, #0d6efd, #6610f2);">
           <h3 class="mb-0 text-center">
-            <i class="bi bi-bell-fill me-3"></i>
-            Buzón de Notificaciones
+            <i class="bi bi-bell-fill me-2"></i> Buzón de Notificaciones
           </h3>
         </div>
 
         <div class="card-body p-0">
-          <div *ngIf="loading" class="text-center py-5">
-            <div class="spinner-border text-primary" role="status">
-              <span class="visually-hidden">Cargando notificaciones...</span>
-            </div>
+
+          <div *ngIf="loading" class="text-center py-5 my-4">
+            <div class="spinner-border text-primary" role="status"></div>
             <p class="mt-3 text-muted">Cargando tus mensajes...</p>
           </div>
 
-          <div *ngIf="!loading && notificaciones.length === 0" class="text-center py-5">
+          <div *ngIf="!loading && notificaciones.length === 0" class="text-center py-5 my-4">
             <i class="bi bi-inbox display-1 text-muted"></i>
-            <h4 class="mt-3 text-muted">No tienes notificaciones</h4>
-            <p>Cuando el administrador revise tus solicitudes, aparecerán aquí.</p>
+            <h4 class="mt-3 text-secondary fw-bold">No tienes notificaciones</h4>
+            <p class="text-muted">Cuando el administrador revise tus solicitudes, aparecerán aquí.</p>
           </div>
 
           <div *ngIf="!loading && notificaciones.length > 0" class="list-group list-group-flush">
-            <div 
-              *ngFor="let notif of notificaciones" 
-              class="list-group-item list-group-item-action p-4 border-start-0 border-end-0"
-              [class.border-primary]="!notif.leida"
+
+            <div *ngFor="let notif of notificaciones"
+              class="list-group-item p-4 border-0 border-bottom"
+              [ngClass]="{'bg-light': notif.leida === true, 'bg-white border-start border-4 border-primary': !notif.leida}"
               (click)="marcarComoLeida(notif)"
               style="cursor: pointer;">
-              
-              <div class="d-flex w-100 justify-content-between align-items-start">
-                <div class="flex-grow-1 me-3">
-                  <h5 class="mb-1 fw-bold d-flex align-items-center">
-                    <span class="badge rounded-pill me-2" [class.bg-danger]="!notif.leida" [class.bg-secondary]="notif.leida">
+
+              <div class="d-flex justify-content-between">
+
+                <div>
+                  <h5 class="fw-bold mb-1 d-flex align-items-center">
+                    <span class="badge me-2 rounded-pill"
+                      [ngClass]="notif.leida ? 'bg-secondary' : 'bg-danger'">
                       {{ notif.leida ? 'Leída' : 'Nueva' }}
                     </span>
                     {{ notif.titulo }}
                   </h5>
+
                   <p class="mb-2 text-muted">{{ notif.mensaje }}</p>
-                  <small class="text-muted">
-                    <i class="bi bi-clock me-1"></i>
+
+                  <small class="text-muted d-flex align-items-center">
+                    <i class="bi bi-clock me-2"></i>
                     {{ notif.fecha | date:'medium' }}
                   </small>
                 </div>
-                
-                <div *ngIf="!notif.leida" class="text-danger">
-                  <i class="bi bi-circle-fill fs-4"></i>
+
+                <div *ngIf="!notif.leida" class="text-danger d-flex align-items-center">
+                  <i class="bi bi-dot fs-1"></i>
                 </div>
+
               </div>
             </div>
+
           </div>
         </div>
 
-        <div class="card-footer bg-light text-center py-3">
-          <small class="text-muted">
-            <i class="bi bi-info-circle me-1"></i>
-            Haz clic en una notificación para marcarla como leída
+        <div class="card-footer bg-transparent text-center py-3 border-0">
+          <small class="text-muted d-flex justify-content-center align-items-center">
+            <i class="bi bi-info-circle me-2"></i> Haz clic en una notificación para marcarla como leída
           </small>
         </div>
+
       </div>
     </div>
   </div>

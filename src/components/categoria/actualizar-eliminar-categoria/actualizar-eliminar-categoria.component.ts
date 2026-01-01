@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CategoriaService } from '../../../services/categoria-service/categoria-service';
 import Swal from 'sweetalert2';
 import { FormsModule } from '@angular/forms';
@@ -12,7 +12,7 @@ import { RouterModule } from '@angular/router';
   templateUrl: './actualizar-eliminar-categoria.component.html',
   styleUrl: './actualizar-eliminar-categoria.component.css',
 })
-export class ActualizarEliminarCategoriaComponent {
+export class ActualizarEliminarCategoriaComponent implements OnInit {
 
   categorias: any[] = [];
 
