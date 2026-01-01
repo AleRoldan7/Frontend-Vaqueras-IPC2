@@ -4,6 +4,8 @@
       Administrador Sistema
     </a>
 
+    <div class="navbar-background"></div>
+
     <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSistema">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -20,7 +22,8 @@
           </a>
           <ul class="dropdown-menu dropdown-menu-dark">
             <li><a class="dropdown-item" routerLink="/admin-sistema/crear-categoria">Crear Categoria</a></li>
-            <a class="nav-link px-3" routerLink="/admin-sistema/categorias" routerLinkActive="active">Actualizar y Eliminar</a>
+            <a class="nav-link px-3" routerLink="/admin-sistema/categorias" routerLinkActive="active">Actualizar y
+              Eliminar</a>
           </ul>
         </li>
 
@@ -37,7 +40,8 @@
         </li>
 
         <li class="nav-item">
-          <a class="nav-link px-3" routerLink="/admin-sistema/solicitudes" routerLinkActive="active">Solicitudes Pendientes</a>
+          <a class="nav-link px-3" routerLink="/admin-sistema/solicitudes" routerLinkActive="active">Solicitudes
+            Pendientes</a>
         </li>
 
         <li class="nav-item dropdown">
@@ -47,14 +51,14 @@
           <ul class="dropdown-menu dropdown-menu-dark">
             <li><a class="dropdown-item" routerLink="/admin-sistema/reportes/ganancia-global">Ganancia Global</a></li>
             <li><a class="dropdown-item" routerLink="/admin-sistema/reportes/ingresos">Ingresos Empresas</a></li>
-            <li><a class="dropdown-item" routerLink="/admin-sistema/reportes/top-ventas-calidad">Top Ventas Calidad</a></li>
+            <li><a class="dropdown-item" routerLink="/admin-sistema/reportes/top-ventas-calidad">Top Ventas Calidad</a>
+            </li>
             <li><a class="dropdown-item" routerLink="/admin-sistema/reportes/ranking-usuario">Rankign Usuarios</a></li>
           </ul>
         </li>
       </ul>
 
       <div class="d-flex align-items-center gap-3">
-        <input type="search" class="form-control search-input" placeholder="Buscar..." />
         <button class="btn btn-outline-light btn-sm" (click)="cerrarSesion()">
           Cerrar Sesión
         </button>

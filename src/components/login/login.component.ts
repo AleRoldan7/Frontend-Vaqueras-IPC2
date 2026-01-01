@@ -37,24 +37,24 @@ export class LoginComponent {
             this.router.navigate(['/usuario-comun']);
             Swal.fire({
               icon: 'success',
-              title: 'Información',
-              text: 'Funcionalidades de usuario común aún en desarrollo.',
+              title: 'Inicio Sesión',
+              text: 'Bienvenido Gamer',
             });
             break;
           case 'ADMIN_EMPRESA':
             this.router.navigate(['/admin-empresa']);
               Swal.fire({
-              icon: 'info',
-              title: 'Información',
-              text: 'Funcionalidades de admin empresa  aún en desarrollo.',
+              icon: 'success',
+              title: 'Inicio Sesión',
+              text: 'Bienvenido Administrador De Empresa',
             });
             break;
           case 'ADMIN_SISTEMA':
             this.router.navigate(['/admin-sistema']);
               Swal.fire({
-              icon: 'info',
-              title: 'Información',
-              text: 'Funcionalidades de ADMIN SISTEMA aún en desarrollo.',
+              icon: 'success',
+              title: 'Inicio Sesión',
+              text: 'Bienvenido Administrador De Sistema',
             });
             break;
           default:

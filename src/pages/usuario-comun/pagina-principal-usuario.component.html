@@ -1,46 +1,44 @@
-<nav class="navbar navbar-expand-lg header-custom shadow-sm">
-  <div class="container-fluid">
-    <a class="navbar-brand logo-title text-white" routerLink="/usuario-comun">
+<nav class="navbar navbar-expand-lg header-custom shadow-lg" style="background-color: #1a1a2e !important;">
+  <div class="container-fluid position-relative">
+
+    <div class="navbar-background"></div>
+
+    <a class="navbar-brand logo-title text-white fw-bold" routerLink="/usuario-comun">
       {{ nombreUsuario }}
     </a>
 
-    <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarUsuario">
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarUsuario" aria-controls="navbarUsuario" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarUsuario">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0 align-items-lg-center">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 align-items-lg-center gap-lg-1">
         <li class="nav-item">
-          <a class="nav-link px-3" routerLink="/usuario-comun" routerLinkActive="active">Home</a>
+          <a class="nav-link px-3 py-2 rounded-3 text-white" routerLink="/usuario-comun" routerLinkActive="active">Home</a>
         </li>
-
         <li class="nav-item">
-          <a class="nav-link px-3" routerLink="/usuario-comun/perfil" routerLinkActive="active">Perfil</a>
+          <a class="nav-link px-3 py-2 rounded-3 text-white" routerLink="/usuario-comun/perfil" routerLinkActive="active">Perfil</a>
         </li>
-
         <li class="nav-item">
-          <a class="nav-link px-3" routerLink="/usuario-comun/biblioteca" routerLinkActive="active">Biblioteca</a>
+          <a class="nav-link px-3 py-2 rounded-3 text-white" routerLink="/usuario-comun/biblioteca" routerLinkActive="active">Biblioteca</a>
         </li>
-
         <li class="nav-item">
-          <a class="nav-link px-3" routerLink="/usuario-comun/tienda" routerLinkActive="active">Tienda</a>
+          <a class="nav-link px-3 py-2 rounded-3 text-white" routerLink="/usuario-comun/tienda" routerLinkActive="active">Tienda</a>
         </li>
-
         <li class="nav-item">
-          <a class="nav-link px-3" routerLink="/usuario-comun/buscar-videojuego" routerLinkActive="active">Buscar</a>
+          <a class="nav-link px-3 py-2 rounded-3 text-white" routerLink="/usuario-comun/buscar-videojuego" routerLinkActive="active">Buscar</a>
         </li>
-
         <li class="nav-item">
-          <a class="nav-link px-3" routerLink="/usuario-comun/reseña-videojuegos" routerLinkActive="active">
+          <a class="nav-link px-3 py-2 rounded-3 text-white" routerLink="/usuario-comun/reseña-videojuegos" routerLinkActive="active">
             Comentarios y Calificaciones
           </a>
         </li>
 
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle px-3" role="button" data-bs-toggle="dropdown">
+          <a class="nav-link dropdown-toggle px-3 py-2 rounded-3 text-white" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Grupo Familiar
           </a>
-          <ul class="dropdown-menu dropdown-menu-dark">
+          <ul class="dropdown-menu dropdown-menu-dark border-0 shadow">
             <li><a class="dropdown-item" routerLink="/usuario-comun/crear-grupo-familiar">Crear Grupo</a></li>
             <li><a class="dropdown-item" routerLink="/usuario-comun/invitaciones">Invitaciones</a></li>
             <li><a class="dropdown-item" routerLink="/usuario-comun/lista-mis-grupos-usuario">Mis Grupos</a></li>
@@ -50,10 +48,10 @@
         </li>
 
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle px-3" role="button" data-bs-toggle="dropdown">
+          <a class="nav-link dropdown-toggle px-3 py-2 rounded-3 text-white" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Reportes
           </a>
-          <ul class="dropdown-menu dropdown-menu-dark">
+          <ul class="dropdown-menu dropdown-menu-dark border-0 shadow">
             <li><a class="dropdown-item" routerLink="/usuario-comun/reporte/historial-compras">Historial Compras</a></li>
             <li><a class="dropdown-item" routerLink="/usuario-comun/reporte/biblioteca-personal">Biblioteca Personal</a></li>
             <li><a class="dropdown-item" routerLink="/usuario-comun/reporte/categoria-favorita">Categorias Favoritas</a></li>
@@ -63,11 +61,11 @@
       </ul>
 
       <div class="d-flex align-items-center gap-3">
-        <input type="search" class="form-control search-input" placeholder="Buscar..." />
-        <button class="btn btn-outline-light btn-sm" (click)="cerrarSesion()">
+        <button class="btn btn-outline-danger btn-sm px-4" (click)="cerrarSesion()">
           Cerrar Sesión
         </button>
       </div>
     </div>
   </div>
 </nav>
+
